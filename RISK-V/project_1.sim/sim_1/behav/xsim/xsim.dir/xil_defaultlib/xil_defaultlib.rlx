@@ -3,4 +3,6 @@
 Nov 14 2025
 19:37:27
 C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Program_counter.vhdl,1774560980,vhdl,,,,program_counter,,,,,,,,
-C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/SIM/Program_counter_tb.vhd,1774561862,vhdl,,,,program_counter_tb,,,,,,,,
+C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Reg_file.vhd,1774625085,vhdl,,,,reg_file,,,,,,,,
+C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/SIM/Program_counter_tb.vhd,1774562439,vhdl,,,,program_counter_tb,,,,,,,,
+C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/SIM/Reg_file_tb.vhd,1774625470,vhdl,,,,reg_file_tb,,,,,,,,

@@ -1,7 +1,9 @@
 # compile vhdl design source files
 vhdl xil_defaultlib  \
+"../../../../SOURCES/Reg_file.vhd" \
 "../../../../SOURCES/Program_counter.vhdl" \
 "../../../../SOURCES/SIM/Program_counter_tb.vhd" \
+"../../../../SOURCES/SIM/Reg_file_tb.vhd" \
 
 # Do not sort compile order
 nosort
