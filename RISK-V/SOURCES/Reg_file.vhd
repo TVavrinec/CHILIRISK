@@ -21,10 +21,10 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
@@ -53,7 +53,7 @@ SIGNAL regs : t_vector;
 
 begin
 
-PROCESS (REG_WRITE_EN, REG_RST, READ_REG1, READ_REG2, WRITE_REG, WRITE_DATA) begin
+PROCESS (REG_WRITE_EN, REG_RST, WRITE_REG, WRITE_DATA) begin
     regs(0) <= to_signed(0, 32);
 
     IF REG_RST = '1' then

@@ -107,21 +107,7 @@ begin
             WAIT FOR clk_period;
         end loop;
         REG_WRITE_EN <= '0';
-        
-        -- RST  <= '0';
-        -- WAIT FOR clk_period * 100;
-        -- JUMP_F <= '1';
-        -- WAIT FOR clk_period;
-        -- JUMP_F <= '0';
-        -- WAIT FOR clk_period * 100;
-        -- JUMP_F <= '1';
-        -- WAIT FOR clk_period * 2;
-        -- JUMP_F <= '0';
-        -- PC_JUMP <= TO_SIGNED(-16#40000000#,32);
-        -- WAIT FOR clk_period * 100;
-        -- JUMP_F <= '1';
-        -- WAIT FOR clk_period * 20;
-        -- JUMP_F <= '0';
+
         WAIT;
     END PROCESS proc_stim;
             

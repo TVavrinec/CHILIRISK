@@ -81,7 +81,7 @@ BEGIN
   proc_stim : PROCESS
   BEGIN
     RST  <= '1';
-    PC_JUMP <= TO_SIGNED(16#02468AE0#,32);
+    PC_JUMP <= TO_SIGNED(16#0246_8AE0#,32);
     WAIT FOR clk_period * 5;
     RST  <= '0';
     WAIT FOR clk_period * 100;
