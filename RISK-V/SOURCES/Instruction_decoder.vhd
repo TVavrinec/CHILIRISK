@@ -150,9 +150,9 @@ begin
                 instruct_typ <= U;
                 funct_3 <= (others => '0');
                 funct_7 <= (others => '0');
-                rd  <= to_unsigned(0, 5);
-                rs1 <= unsigned(instruct(19 downto 15));
-                rs2 <= unsigned(instruct(24 downto 20));
+                rd  <= unsigned(instruct(11 downto 7));
+                rs1 <= to_unsigned(0, 5);
+                rs2 <= to_unsigned(0, 5);
                 imm <= resize(signed(instruct(31 downto 12)) & to_signed(0, 12), imm'length);
                 jump_f <= '0';
                 branch_f <= '0';
@@ -164,7 +164,7 @@ begin
                 rd  <= unsigned(instruct(11 downto 7 ));
                 rs1 <= to_unsigned(0, 5);
                 rs2 <= to_unsigned(0, 5);
-                imm <= resize(signed(instruct(31) & instruct(19 downto 12) & instruct(20) & instruct(30 downto 25) & '0'), imm'length);
+                imm <= resize(signed(instruct(31) & instruct(19 downto 12) & instruct(20) & instruct(30 downto 21) & '0'), imm'length);
                 jump_f <= '1';
                 branch_f <= '0';
             

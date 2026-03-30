@@ -31,6 +31,9 @@ use IEEE.NUMERIC_STD.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
+library std;
+use std.textio.all;
+
 entity Instruction_decoder_tb is
 --  Port ( );
 end Instruction_decoder_tb;
@@ -64,7 +67,6 @@ architecture Behavioral of Instruction_decoder_tb is
     SIGNAL rs2          : UNSIGNED(4 downto 0);
     SIGNAL rd           : UNSIGNED(4 downto 0);
     SIGNAL instruct_typ : STD_LOGIC_VECTOR(2 downto 0);
-
 begin
 
     Instruction_decoder_inst : Instruction_decoder
@@ -83,79 +85,283 @@ begin
 
 
     proc_stim : PROCESS
-    BEGIN
-    
-        -- R
-        instruct <=  "0000000" & "11101" & "00000" & "000" & "00101" & "0110011";
-        WAIT FOR clk_period;
-        instruct <=  "0000000" & "11110" & "01100" & "000" & "00110" & "0110011";
-        WAIT FOR clk_period;
-        instruct <=  "0000000" & "11111" & "01101" & "000" & "00111" & "0110011";
-        WAIT FOR clk_period;
+        variable error_count : integer;
+        variable L : line;
 
-        -- Test all possible input values
-        for i in 0 to 2**12 - 1 loop
-            instruct <= std_logic_vector(to_unsigned(i, 12)) & std_logic_vector(to_unsigned(i, 5)) & std_logic_vector(to_unsigned(i, 3)) & std_logic_vector(to_unsigned(i, 5)) & "0000011";
+        variable instruct_signed12 : signed(11 downto 0);
+        variable instruct_signed20 : signed(19 downto 0);
+    BEGIN
+        error_count := 0;
+
+        -- Test "all" possible options of R-type instruction
+        for i in 0 to 2**7 - 1 loop
+            instruct <= std_logic_vector(to_signed(i, 7)) & std_logic_vector(to_unsigned(i, 5)) & std_logic_vector(to_unsigned(i, 5)) & std_logic_vector(to_unsigned(i, 3)) & std_logic_vector(to_unsigned(i, 5)) & "0110011";
             WAIT FOR clk_period/2;
-            if i /= to_integer(imm) then
-                report "Error - 101";
+            if to_unsigned(i,7) /= unsigned(funct_7) then
+                error_count := error_count+1;
+                report "Error - funct_7: " & integer'image(to_integer(unsigned(funct_7)));
+            end if;
+            if to_unsigned(i,5)  /= rs2 then
+                error_count := error_count+1;
+                report "Error - rs2: " & integer'image(to_integer(rs2));
+            end if;
+            if to_unsigned(i,5)  /= rs1 then
+                error_count := error_count+1;
+                report "Error - rs1: " & integer'image(to_integer(rs1));
+            end if;
+            if to_unsigned(i,3) /= unsigned(funct_3) then
+                error_count := error_count+1;
+                report "Error - funct_3: " & integer'image(to_integer(unsigned(funct_3)));
+            end if;
+            if to_unsigned(i,5) /= rd then
+                error_count := error_count+1;
+                report "Error - rd: " & integer'image(to_integer(rd));
             end if;
             WAIT FOR clk_period/2;
+        end loop;
+        if error_count = 0 then
+            report "Test: OK - R-typ, opcoude: 0110011";
+        end if;
+        error_count := 0;
+
+        for i in 0 to 2**7 - 1 loop
+            instruct <= std_logic_vector(to_signed(i, 7)) & std_logic_vector(to_unsigned(i, 5)) & std_logic_vector(to_unsigned(i, 5)) & std_logic_vector(to_unsigned(i, 3)) & std_logic_vector(to_unsigned(i, 5)) & "0101111";
+            WAIT FOR clk_period/2;
+            if to_unsigned(i,7) /= unsigned(funct_7) then
+                error_count := error_count+1;
+                report "Error - funct_7: " & integer'image(to_integer(unsigned(funct_7)));
+            end if;
+            if to_unsigned(i,5)  /= rs2 then
+                error_count := error_count+1;
+                report "Error - rs2: " & integer'image(to_integer(rs2));
+            end if;
+            if to_unsigned(i,5)  /= rs1 then
+                error_count := error_count+1;
+                report "Error - rs1: " & integer'image(to_integer(rs1));
+            end if;
+            if to_unsigned(i,3) /= unsigned(funct_3) then
+                error_count := error_count+1;
+                report "Error - funct_3: " & integer'image(to_integer(unsigned(funct_3)));
+            end if;
+            if to_unsigned(i,5) /= rd then
+                error_count := error_count+1;
+                report "Error - rd: " & integer'image(to_integer(rd));
+            end if;
+            WAIT FOR clk_period/2;
+        end loop;
+        if error_count = 0 then
+            report "Test: OK - R-typ, opcoude: 0101111";
+            report "Test: OK - R-typ";
+        end if;
+        error_count := 0;
+
+        -- Test "all" possible options of I-type instruction
+        for i in -2**11 to 2**11 - 1 loop
+            instruct <= std_logic_vector(to_signed(i, 12)) & std_logic_vector(to_unsigned(i, 5)) & std_logic_vector(to_unsigned(i, 3)) & std_logic_vector(to_unsigned(i, 5)) & "0000011";
+            WAIT FOR clk_period/2;
+            if i /= to_integer(imm) then
+                error_count := error_count+1;
+                report "Error - imm: " & integer'image(to_integer(imm));
+            end if;
+            if to_unsigned(i,5)  /= rs1 then
+                error_count := error_count+1;
+                report "Error - rs1: " & integer'image(to_integer(rs1));
+            end if;
+            if to_unsigned(i,3) /= unsigned(funct_3) then
+                error_count := error_count+1;
+                report "Error - funct_3: " & integer'image(to_integer(unsigned(funct_3)));
+            end if;
+            if to_unsigned(i,5) /= rd then
+                error_count := error_count+1;
+                report "Error - rd: " & integer'image(to_integer(rd));
+            end if;
+            WAIT FOR clk_period/2;
+        end loop;
+        if error_count = 0 then
+            report "Test: OK - I-typ, opcoude: 0000011";
+        end if;
+        error_count := 0;
+
+        for i in -2**11 to 2**11 - 1 loop
             instruct <= std_logic_vector(to_unsigned(i, 12)) & std_logic_vector(to_unsigned(i, 5)) & std_logic_vector(to_unsigned(i, 3)) & std_logic_vector(to_unsigned(i, 5)) & "0010011";
             WAIT FOR clk_period/2;
             if i /= to_integer(imm) then
-                report "Error - 107";
+                error_count := error_count+1;
+                report "Error - imm: " & integer'image(to_integer(imm));
+            end if;
+            if to_unsigned(i,5)  /= rs1 then
+                error_count := error_count+1;
+                report "Error - rs1: " & integer'image(to_integer(rs1));
+            end if;
+            if to_unsigned(i,3) /= unsigned(funct_3) then
+                error_count := error_count+1;
+                report "Error - funct_3: " & integer'image(to_integer(unsigned(funct_3)));
+            end if;
+            if to_unsigned(i,5) /= rd then
+                error_count := error_count+1;
+                report "Error - rd: " & integer'image(to_integer(rd));
             end if;
             WAIT FOR clk_period/2;
+        end loop;
+        if error_count = 0 then
+            report "Test: OK - I-typ, opcoude: 0010011";
+        end if;
+        error_count := 0;
+        
+        for i in -2**11 to 2**11 - 1 loop
             instruct <= std_logic_vector(to_unsigned(i, 12)) & std_logic_vector(to_unsigned(i, 5)) & std_logic_vector(to_unsigned(i, 3)) & std_logic_vector(to_unsigned(i, 5)) & "1100111";
             WAIT FOR clk_period/2;
             if i /= to_integer(imm) then
-                report "Error - 113";
+                error_count := error_count+1;
+                report "Error - imm: " & integer'image(to_integer(imm));
+            end if;
+            if to_unsigned(i,5)  /= rs1 then
+                error_count := error_count+1;
+                report "Error - rs1: " & integer'image(to_integer(rs1));
+            end if;
+            if to_unsigned(i,3) /= unsigned(funct_3) then
+                error_count := error_count+1;
+                report "Error - funct_3: " & integer'image(to_integer(unsigned(funct_3)));
+            end if;
+            if to_unsigned(i,5) /= rd then
+                error_count := error_count+1;
+                report "Error - rd: " & integer'image(to_integer(rd));
             end if;
             WAIT FOR clk_period/2;
-            instruct <= std_logic_vector(to_unsigned(i, 12)) & std_logic_vector(to_unsigned(i, 5)) & std_logic_vector(to_unsigned(i, 3)) & std_logic_vector(to_unsigned(i, 5)) & "1110011";
-            WAIT FOR clk_period;
-            if i /= to_integer(imm) then
-                report "Error - 119";
-            end if;
         end loop;
+        if error_count = 0 then
+            report "Test: OK - I-typ, opcoude: 1100111";
+        end if;
+        error_count := 0;
+        
+        for i in -2**11 to 2**11 - 1 loop
+            instruct <= std_logic_vector(to_unsigned(i, 12)) & std_logic_vector(to_unsigned(i, 5)) & std_logic_vector(to_unsigned(i, 3)) & std_logic_vector(to_unsigned(i, 5)) & "1110011";
+            WAIT FOR clk_period/2;
+            if i /= to_integer(imm) then
+                error_count := error_count+1;
+                report "Error - imm: " & integer'image(to_integer(imm));
+            end if;
+            if to_unsigned(i,5)  /= rs1 then
+                error_count := error_count+1;
+                report "Error - rs1: " & integer'image(to_integer(rs1));
+            end if;
+            if to_unsigned(i,3) /= unsigned(funct_3) then
+                error_count := error_count+1;
+                report "Error - funct_3: " & integer'image(to_integer(unsigned(funct_3)));
+            end if;
+            if to_unsigned(i,5) /= rd then
+                error_count := error_count+1;
+                report "Error - rd: " & integer'image(to_integer(rd));
+            end if;
+            WAIT FOR clk_period/2;
+        end loop;
+        if error_count = 0 then
+            report "Test: OK - I-typ, opcoude: 1110011";
+            report "Test: OK - I-typ";
+        end if;
+        error_count := 0;
 
-        wait for 10 ns;
+        -- Test "all" possible options of S-type instruction
+        for i in -2**11 to 2**11 - 1 loop
+            instruct_signed12 := to_signed(i, 12);
+            instruct <= std_logic_vector(instruct_signed12(11 downto 5)) & std_logic_vector(to_unsigned(i, 5)) & std_logic_vector(to_unsigned(i, 5)) & std_logic_vector(to_unsigned(i, 3)) & std_logic_vector(instruct_signed12(4 downto 0)) & "0100011";
+            WAIT FOR clk_period/2;
+            if i /= to_integer(imm) then
+                error_count := error_count+1;
+                report "Error - imm: " & integer'image(to_integer(imm));
+            end if;
+            if to_unsigned(i,5)  /= rs2 then
+                error_count := error_count+1;
+                report "Error - rs2: " & integer'image(to_integer(rs2));
+            end if;
+            if to_unsigned(i,5)  /= rs1 then
+                error_count := error_count+1;
+                report "Error - rs1: " & integer'image(to_integer(rs1));
+            end if;
+            if to_unsigned(i,3) /= unsigned(funct_3) then
+                error_count := error_count+1;
+                report "Error - funct_3: " & integer'image(to_integer(unsigned(funct_3)));
+            end if;
+            WAIT FOR clk_period/2;
+        end loop;
+        if error_count = 0 then
+            report "Test: OK - S-typ, opcoude: 0100011";
+            report "Test: OK - S-typ";
+        end if;
+        error_count := 0;
 
-        report "Test: OK";
 
-        -- I
-        WAIT FOR clk_period;
-        instruct <=  "000000000001" & "00000" & "000" & "00101" & "0010011";
-        WAIT FOR clk_period;
-        instruct <=  "000000100000" & "01100" & "000" & "00110" & "0010011";
-        WAIT FOR clk_period;
-        instruct <=  "100000000000" & "01101" & "000" & "00111" & "0010011";
+        -- Test "all" possible options of B-type instruction
+        for i in -2**10 to 2**10 - 1 loop
+            instruct_signed12 := to_signed(i, 12);
+            instruct <= "0" & std_logic_vector(instruct_signed12(9 downto 4)) & std_logic_vector(to_unsigned(i, 5)) & std_logic_vector(to_unsigned(i, 5)) & std_logic_vector(to_unsigned(i, 3)) & std_logic_vector(instruct_signed12(3 downto 0)) & instruct_signed12(10) & "1100011";
+            WAIT FOR clk_period/2;
+            if i*2 /= to_integer(imm) then
+                error_count := error_count+1;
+                report "Error - imm: " & integer'image(to_integer(imm));
+            end if;
+            if to_unsigned(i,5)  /= rs2 then
+                error_count := error_count+1;
+                report "Error - rs2: " & integer'image(to_integer(rs2));
+            end if;
+            if to_unsigned(i,5)  /= rs1 then
+                error_count := error_count+1;
+                report "Error - rs1: " & integer'image(to_integer(rs1));
+            end if;
+            if to_unsigned(i,3) /= unsigned(funct_3) then
+                error_count := error_count+1;
+                report "Error - funct_3: " & integer'image(to_integer(unsigned(funct_3)));
+            end if;
+            WAIT FOR clk_period/2;
+        end loop;
+        if error_count = 0 then
+            report "Test: OK - B-typ, opcoude: 1100011";
+        end if;
+        error_count := 0;
 
-        -- I
-        WAIT FOR clk_period;
-        instruct <=  "000000000001" & "00000" & "000" & "00101" & "0000011";
-        WAIT FOR clk_period;
-        instruct <=  "000000100000" & "01100" & "000" & "00110" & "0000011";
-        WAIT FOR clk_period;
-        instruct <=  "100000000000" & "01101" & "000" & "00111" & "0000011";
 
-        -- S
-        WAIT FOR clk_period;
-        instruct <=  "0000001" & "11101" & "00000" & "000" & "00101" & "0100011";
-        WAIT FOR clk_period;
-        instruct <=  "1000000" & "11110" & "01100" & "000" & "00110" & "0100011";
-        WAIT FOR clk_period;
-        instruct <=  "0000101" & "11111" & "01101" & "000" & "00111" & "0100011";
+        -- Test "all" possible options of U-type instruction
+        for i in -2**20 to 2**20 - 1 loop
+            instruct <= std_logic_vector(to_unsigned(i, 20)) & std_logic_vector(to_unsigned(i, 5)) & "0110111";
+            WAIT FOR clk_period/2;
+            if i*2**12 /= to_integer(imm) then
+                error_count := error_count+1;
+                report "Error - imm decod: " & integer'image(to_integer(imm)) & " imm set:" & integer'image(i);
+            end if;
+            if to_unsigned(i,5)  /= rd then
+                error_count := error_count+1;
+                report "Error - rd: " & integer'image(to_integer(rd));
+            end if;
+            WAIT FOR clk_period/2;
+        end loop;
+        if error_count = 0 then
+            report "Test: OK - U-typ, opcoude: 0110111";
+            report "Test: OK - U-typ";
+        end if;
+        error_count := 0;
 
-        -- B
-        WAIT FOR clk_period;
-        instruct <=  "0000001" & "11101" & "00000" & "000" & "00101" & "1100011";
-        WAIT FOR clk_period;
-        instruct <=  "1000000" & "11110" & "01100" & "000" & "00110" & "1100011";
-        WAIT FOR clk_period;
-        instruct <=  "0000101" & "11111" & "01101" & "000" & "00111" & "1100011";
-        WAIT;
+        -- Test "all" possible options of J-type instruction
+        for i in -2**19 to 2**19 - 1 loop
+            instruct_signed20 := to_signed(i, 20);
+            instruct <= instruct_signed20(19) & std_logic_vector(instruct_signed20(9 downto 0)) & instruct_signed20(10) & std_logic_vector(instruct_signed20(18 downto 11)) & std_logic_vector(to_unsigned(i, 5)) & "1101111";
+            WAIT FOR clk_period/2;
+            if i*2 /= to_integer(imm) then
+                error_count := error_count+1;
+                report "Error - imm: " & integer'image(to_integer(imm));
+            end if;
+            if to_unsigned(i,5)  /= rd then
+                error_count := error_count+1;
+                report "Error - rd: " & integer'image(to_integer(rd));
+            end if;
+            WAIT FOR clk_period/2;
+        end loop;
+        if error_count = 0 then
+            report "Test: OK - J-typ, opcoude: 1101111";
+            report "Test: OK - J-typ";
+        end if;
+        error_count := 0;
+
+
     END PROCESS proc_stim;
 
 end Behavioral;
