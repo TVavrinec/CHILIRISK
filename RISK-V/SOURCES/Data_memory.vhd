@@ -2,7 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-entity Instruction_Cache is
+entity Data_memory is
     Port ( 
            --INPUTS
            clk : in STD_LOGIC;
@@ -14,13 +14,13 @@ entity Instruction_Cache is
            --OUTPUTS
            r_data : out STD_LOGIC_VECTOR (7 downto 0));
            
-end Instruction_Cache;
+end Data_memory;
 
-architecture Behavioral of Instruction_Cache is
+architecture Behavioral of Data_memory is
 
     --Declare memory  
-    --INSTRUCTION MEMORY IS 36863*8bits --> 36,864 kBytes 
-    type mem_type is array (0 to 36863) of std_logic_vector(7 downto 0);
+    --INSTRUCTION MEMORY IS 9216*8bits --> 9,216kBytes 
+    type mem_type is array (0 to 9215) of std_logic_vector(7 downto 0);
     signal mem : mem_type := (others => (others => '0'));
     
     --Memory should be implemented as block RAM
