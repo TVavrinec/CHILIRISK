@@ -50,7 +50,7 @@ begin
 
     PROCESS (CLK)
     BEGIN
-        IF RST = '1' THEN
+        IF RST = '0' THEN
             PC_internal <= TO_UNSIGNED(0, 32);
         ELSIF rising_edge(CLK) THEN
             PC_internal <= PC_internal_next;

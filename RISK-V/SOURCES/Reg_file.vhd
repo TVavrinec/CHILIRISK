@@ -56,7 +56,7 @@ begin
 PROCESS (REG_WRITE_EN, REG_RST, WRITE_REG, WRITE_DATA) begin
     regs(0) <= to_signed(0, 32);
 
-    IF REG_RST = '1' then
+    IF REG_RST = '0' then
         for n in 1 to 31 loop
             regs(n) <= to_signed(0, 32);
         end loop;
@@ -65,7 +65,6 @@ PROCESS (REG_WRITE_EN, REG_RST, WRITE_REG, WRITE_DATA) begin
     END IF;
 
 END PROCESS;
-
 
 DATA_RED1 <= regs(to_integer(READ_REG1));
 DATA_RED2 <= regs(to_integer(READ_REG2));
