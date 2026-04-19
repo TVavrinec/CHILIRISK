@@ -33,6 +33,7 @@ use IEEE.NUMERIC_STD.ALL;
 entity Program_counter is
     Port ( 
             CLK         : in STD_LOGIC;
+            CLK_EN      : in STD_LOGIC;
             JUMP_F      : in STD_LOGIC;
             RST         : in STD_LOGIC;
             PC_JUMP     : in SIGNED(31 downto 0);
@@ -53,7 +54,9 @@ begin
         IF RST = '0' THEN
             PC_internal <= TO_UNSIGNED(0, 32);
         ELSIF rising_edge(CLK) THEN
-            PC_internal <= PC_internal_next;
+            IF CLK_EN = '1' THEN
+                PC_internal <= PC_internal_next;
+            END IF;
         END IF;
     END PROCESS;
 
