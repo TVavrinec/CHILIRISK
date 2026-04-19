@@ -1,0 +1,85 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "dda894fe-50b1-4c03-9acd-4171215ce1df")
+	(paper "A4")
+	(lib_symbols)
+	(hierarchical_label "r_data{0 - 31}"
+		(shape output)
+		(at 165.1 50.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "04f63a6c-f472-4654-a58d-af0e8b05ba7d")
+	)
+	(hierarchical_label "addr{0 - 31}"
+		(shape input)
+		(at 127 63.5 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "0d501450-0487-44ef-adc4-7c1d1c7aa0a8")
+	)
+	(hierarchical_label "UnSi_flag"
+		(shape input)
+		(at 127 88.9 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "0eba2069-3f47-44d1-bcef-5781feda6f7d")
+	)
+	(hierarchical_label "w_en"
+		(shape input)
+		(at 127 101.6 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "8bf10f65-2b14-406e-89f2-88e27200e4d2")
+	)
+	(hierarchical_label "w_data{0 - 31}"
+		(shape input)
+		(at 127 50.8 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "9ac6d6a5-d319-4765-aa2f-3a043e0ed9ed")
+	)
+	(hierarchical_label "RW_Size{0 1}"
+		(shape input)
+		(at 127 76.2 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "b87353a7-e8d2-4bd2-a8f8-354ae689f5f6")
+	)
+	(hierarchical_label "clk"
+		(shape input)
+		(at 127 114.3 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "df0ce461-c68c-4a10-a935-a1b953a303e3")
+	)
+)

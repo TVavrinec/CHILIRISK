@@ -1,0 +1,151 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "f4f627e7-535b-4356-9f9f-1cc60baebd33")
+	(paper "A4")
+	(lib_symbols)
+	(hierarchical_label "i_jump"
+		(shape input)
+		(at 101.6 76.2 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "18c4baf0-7a22-4611-8c6c-fee807ac986b")
+	)
+	(hierarchical_label "i_ce"
+		(shape input)
+		(at 101.6 50.8 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "355215ab-dd8b-4aaf-8fc1-e717ec0d8550")
+	)
+	(hierarchical_label "i_funct7{0 - 6}"
+		(shape input)
+		(at 101.6 101.6 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "36f87f9c-b7d4-4378-a5d5-c67762207239")
+	)
+	(hierarchical_label "i_sel_a"
+		(shape input)
+		(at 101.6 63.5 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "46c2a3d7-7105-4722-94a2-685c1705c03c")
+	)
+	(hierarchical_label "i_din1{0 - 31}"
+		(shape input)
+		(at 101.6 139.7 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "6fab701f-f261-47ef-9b77-622b375eae0b")
+	)
+	(hierarchical_label "o_dout{0 - 31}"
+		(shape output)
+		(at 152.4 38.1 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "795737f8-8c6c-4a02-b463-f95cd5fd4a0b")
+	)
+	(hierarchical_label "o_pc{0 - 31}"
+		(shape output)
+		(at 152.4 50.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "7c47ac35-d0ce-451c-a838-c5dabfd8228e")
+	)
+	(hierarchical_label "i_funct3{0 - 2}"
+		(shape input)
+		(at 101.6 88.9 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "9b44e670-68b0-46a1-8e0e-c84ad24de1c8")
+	)
+	(hierarchical_label "i_imm{0 - 31}"
+		(shape input)
+		(at 101.6 152.4 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a7f72027-97e5-4140-95a4-64b542250f90")
+	)
+	(hierarchical_label "i_pc{0 - 31}"
+		(shape input)
+		(at 101.6 165.1 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "d77a36a8-883f-4b04-a6ad-66e71bd776de")
+	)
+	(hierarchical_label "i_gclk"
+		(shape input)
+		(at 101.6 38.1 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "e16ae593-798e-4c07-951a-26d1296572da")
+	)
+	(hierarchical_label "i_din0{0 - 31}"
+		(shape input)
+		(at 101.6 127 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "e73a2982-78ed-4b8f-b465-ecd00f906e20")
+	)
+	(hierarchical_label "i_inst_type{0 - 2}"
+		(shape input)
+		(at 101.6 114.3 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "f76ac180-4676-4cd3-b443-a92de5d461e1")
+	)
+)

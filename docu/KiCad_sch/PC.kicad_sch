@@ -1,0 +1,85 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "210038b6-a464-42b6-a0fd-a87700cb2025")
+	(paper "A4")
+	(lib_symbols)
+	(hierarchical_label "PC_JUMP{0 - 31}"
+		(shape input)
+		(at 127 101.6 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "048a7110-b788-4a53-a487-373a292a5a40")
+	)
+	(hierarchical_label "CLK_EN"
+		(shape input)
+		(at 127 127 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "65ef53ed-3b08-4be1-88c2-3ee8d742a155")
+	)
+	(hierarchical_label "RST"
+		(shape input)
+		(at 127 76.2 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "7a6f9c49-ae18-4e96-b1c8-ecf271d2945b")
+	)
+	(hierarchical_label "CLK"
+		(shape input)
+		(at 127 114.3 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "7fdbdf96-e876-4fac-a369-e8f0a0a17e78")
+	)
+	(hierarchical_label "JUMP_F"
+		(shape input)
+		(at 127 88.9 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "9274c980-286b-4341-858b-daf582269e66")
+	)
+	(hierarchical_label "NEXT_PC{0 - 31}"
+		(shape output)
+		(at 165.1 88.9 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "c2694599-1407-40b7-b046-cc0855f36389")
+	)
+	(hierarchical_label "PC{0 - 31}"
+		(shape output)
+		(at 165.1 76.2 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "ecfee608-f4f5-4d36-9d7e-ea1f15e70ac7")
+	)
+)

@@ -1,0 +1,162 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "9af91a79-43ba-4ca5-acda-fe0842d2caf3")
+	(paper "A4")
+	(lib_symbols)
+	(hierarchical_label "PC_adding_f"
+		(shape output)
+		(at 127 88.9 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "18c954ca-bf08-4eb9-990a-42c20fda3f0e")
+	)
+	(hierarchical_label "rs1{0 - 4}"
+		(shape output)
+		(at 127 139.7 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "3183582c-34b3-4b89-9e5e-91345bf00914")
+	)
+	(hierarchical_label "instruct_typ{0 - 2}"
+		(shape output)
+		(at 127 25.4 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "341fafd5-775a-4aa8-8cd1-3ef2e365307a")
+	)
+	(hierarchical_label "bite_cound_memory{0 1}"
+		(shape output)
+		(at 127 114.3 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "3bed74f8-d03f-4277-8b1b-2f2073313536")
+	)
+	(hierarchical_label "rd{0 - 4}"
+		(shape output)
+		(at 127 165.1 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "78e795dd-a564-4955-ad34-40c4f7081ff7")
+	)
+	(hierarchical_label "rs2{0 - 4}"
+		(shape output)
+		(at 127 152.4 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "7a7ef215-a3bc-46db-a0ef-0e4299fa2e45")
+	)
+	(hierarchical_label "bite_type_memory"
+		(shape output)
+		(at 127 127 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "7ef0a4aa-bb6c-47d7-9aea-a13077d7bc1b")
+	)
+	(hierarchical_label "reg_use_f"
+		(shape output)
+		(at 127 76.2 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "8ba3567f-bb95-440f-93d3-fae5b0e2ffd1")
+	)
+	(hierarchical_label "memory_use_f"
+		(shape output)
+		(at 127 101.6 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "9da01e36-1253-43f2-8ad0-c08a1ae2bd3c")
+	)
+	(hierarchical_label "funct_3{0 - 2}"
+		(shape output)
+		(at 127 38.1 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "ac669dae-ff50-4a09-b05d-0fb681371ac6")
+	)
+	(hierarchical_label "funct_7{0 - 6}"
+		(shape output)
+		(at 127 50.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "c713931d-fbe4-43e0-85e7-36836ee426cc")
+	)
+	(hierarchical_label "instruct{0 - 31}"
+		(shape input)
+		(at 76.2 25.4 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "c7a82a3e-0ce6-45eb-996a-554fb49762ef")
+	)
+	(hierarchical_label "imm{0 - 31}"
+		(shape output)
+		(at 127 177.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "c854a274-023f-4533-b269-2de06fe7fbf7")
+	)
+	(hierarchical_label "jump_f"
+		(shape output)
+		(at 127 63.5 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "d85fd4e1-946d-4adb-82c8-61d15797914c")
+	)
+)

@@ -1,0 +1,96 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "2e7c4295-4b84-4c13-aee8-4f652aeedc12")
+	(paper "A4")
+	(lib_symbols)
+	(hierarchical_label "WRITE_DATA{0 - 31}"
+		(shape input)
+		(at 101.6 114.3 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "1062ec1d-52fe-445a-8d03-ccde91a78190")
+	)
+	(hierarchical_label "READ_REG1{0 - 4}"
+		(shape input)
+		(at 101.6 76.2 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "3b2a85a2-676f-463a-972d-c06f45f1c3ef")
+	)
+	(hierarchical_label "REG_RST"
+		(shape input)
+		(at 101.6 63.5 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "560b5097-f6b6-4a10-ac96-6f716165d57a")
+	)
+	(hierarchical_label "WRITE_REG{0 - 4}"
+		(shape input)
+		(at 101.6 101.6 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "9654ec35-699b-4603-8845-c6ac45e2a5a3")
+	)
+	(hierarchical_label "DATA_RED2{0 - 31}"
+		(shape output)
+		(at 152.4 63.5 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "98979ed4-abe6-4fad-862f-ad15534455da")
+	)
+	(hierarchical_label "DATA_RED1{0 - 31}"
+		(shape output)
+		(at 152.4 50.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "baf02f18-6645-4357-bbf7-cf6dd67d984f")
+	)
+	(hierarchical_label "READ_REG2{0 - 4}"
+		(shape input)
+		(at 101.6 88.9 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "db4bc44e-a0eb-4265-984e-02fbf1e4ed37")
+	)
+	(hierarchical_label "REG_WRITE_EN"
+		(shape input)
+		(at 101.6 50.8 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "deffd6fb-3ca1-4848-9e2b-2a4edcc5852f")
+	)
+)
