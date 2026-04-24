@@ -17,6 +17,11 @@
 -- Additional Comments:
 -- 
 -- 		testbench for the module top_alu
+-- 		UNNECESSARILY EXTENSIVE!!!!!!!!
+-- 		UNNECESSARILY EXTENSIVE!!!!!!!!
+-- 		UNNECESSARILY EXTENSIVE!!!!!!!!
+-- 		ONLY WORKS WITH THE SYNC ALU DESIGN (top_alu) NOT THE (top_alu_async)!
+-- 		TESTING JUST THE U INSTRUCTION
 -- 
 ----------------------------------------------------------------------------------
 
@@ -62,17 +67,25 @@ architecture Behavioral of top_alu_u_tb is
 	
 	signal wi_sel_a		: std_logic := '0';
 	signal wi_jump		: std_logic := '0';
+	signal wi_u_type	: std_logic := '0';
+	signal wi_load		: std_logic := '0';
+
 	signal wi_inst		: std_logic_vector(2 downto 0)				:= (others => '0');
 	signal wi_funct3	: std_logic_vector(2 downto 0)				:= (others => '0');
 	signal wi_funct7	: std_logic_vector(6 downto 0)				:= (others => '0');
+
 	signal wi_din0		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
 	signal wi_din1		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
 	signal wi_imm		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
 	signal wi_pc		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
+
 	signal wo_dout		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
+	signal wo_pc		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
+	signal wo_addr		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
+
 	signal wo_debug		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
 	signal wo_pc_debug	: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
-	signal wo_pc		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
+	signal wo_addr_debug: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
 
 	signal r_reg_cnt	: unsigned(20-1 downto 0) := (others => '0');
 
@@ -129,8 +142,10 @@ begin
 		-----------------------------------------------------------------------
 		U0_loop: for k in 0 to 2**(19)-1 loop
 			-- START
-			wi_sel_a	<= '1';				-- '1' = work with data1 | '0' work with imm
-			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
+			wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
+			wi_jump		<= '-';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
+			wi_load		<= '-';				-- load instruction
+			wi_u_type	<= '1';				-- type of U instruction
 			wi_inst		<= U;
 			wi_funct3	<= (others => '0');	-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
 			wi_funct7	<= (others => '0');	-- bit (5) decides modes of certain operations 0/1 (ADD/SUB | SRL/SRA)
@@ -153,8 +168,10 @@ begin
 		
 		U1_loop: for k in 0 to 2**(19)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
-			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
+			wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
+			wi_jump		<= '-';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
+			wi_load		<= '-';				-- load instruction
+			wi_u_type	<= '0';				-- type of U instruction
 			wi_inst		<= U;
 			wi_funct3	<= (others => '0');			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
 			wi_funct7	<= (others => '0');		-- bit (5) decides modes of certain operations 0/1 (ADD/SUB | SRL/SRA)
@@ -200,9 +217,12 @@ begin
 	port map(
 		o_dout_DEBUG => wo_debug,
 		o_pc_DEBUG 	 => wo_pc_debug,
+		o_addr_DEBUG => wo_addr_debug,
 		i_gclk		 => w_clk,
 		i_ce		 => w_ce,
 		i_sel_a		 => wi_sel_a,
+		i_u_type	 => wi_u_type,
+		i_load	 	 => wi_load,
 		i_jump		 => wi_jump,
 		i_funct3	 => wi_funct3,
 		i_funct7	 => wi_funct7,
@@ -212,6 +232,8 @@ begin
 		i_imm		 => wi_imm,
 		i_pc		 => wi_pc,
 		o_dout		 => wo_dout,
-		o_pc		 => wo_pc
+		o_pc		 => wo_pc,
+		o_addr		 => wo_addr
 	);
+
 end Behavioral;
