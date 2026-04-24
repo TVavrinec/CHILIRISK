@@ -17,6 +17,9 @@
 -- Additional Comments:
 -- 
 -- 		testbench for the module top_alu
+-- 		UNNECESSARILY EXTENSIVE!!!
+-- 		ONLY WORKS WITH THE SYNC ALU DESIGN (top_alu) NOT THE (top_alu_async)!
+-- 		TESTING ALL FUNCTIONALITY EXCEPT THE U INSTRUCTION (makes no sense on 6-bit vectors)
 -- 
 ----------------------------------------------------------------------------------
 
@@ -62,17 +65,25 @@ architecture Behavioral of top_alu_tb is
 	
 	signal wi_sel_a		: std_logic := '0';
 	signal wi_jump		: std_logic := '0';
+	signal wi_u_type	: std_logic := '0';
+	signal wi_load		: std_logic := '0';
+
 	signal wi_inst		: std_logic_vector(2 downto 0)				:= (others => '0');
 	signal wi_funct3	: std_logic_vector(2 downto 0)				:= (others => '0');
 	signal wi_funct7	: std_logic_vector(6 downto 0)				:= (others => '0');
+
 	signal wi_din0		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
 	signal wi_din1		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
 	signal wi_imm		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
 	signal wi_pc		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
+
 	signal wo_dout		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
+	signal wo_pc		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
+	signal wo_addr		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
+
 	signal wo_debug		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
 	signal wo_pc_debug	: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
-	signal wo_pc		: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
+	signal wo_addr_debug: std_logic_vector(C_DATA_WIDTH-1 downto 0) := (others => '0');
 
 	signal r_reg_cnt	: unsigned(2*C_DATA_WIDTH-1 downto 0) := (others => '0');
 
@@ -216,10 +227,13 @@ begin
 		
 	begin
 
+		wi_load		<= '0';				-- load instruction
+		wi_u_type	<= '-';				-- type of U instruction
+
 		-----------------------------------------------------------------------
 		-------					REGISTER INSTRUCTIONS					-------
 		-----------------------------------------------------------------------
-
+		
 		AND_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
 			wi_sel_a	<= '1';				-- '1' = work with data1 | '0' work with imm
@@ -733,35 +747,7 @@ begin
 		end loop;
 			
 			r_reg_cnt <= (others => '0');
-/*
-		-- invalid jumping, funct3 /= "000"!
-		I_invalid_jump_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
-			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
-			wi_jump		<= '1';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
-			wi_inst		<= I;
-			wi_funct3	<= "110";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
-			wi_funct7	<= (others => '0');	-- bit (5) decides modes of certain operations 0/1 (ADD/SUB | SRL/SRA)
-			wi_din0		<= std_logic_vector(r_reg_cnt(2*C_DATA_WIDTH-1 downto C_DATA_WIDTH));
-			wi_din1		<= (others => '0');
-			wi_imm		<= std_logic_vector(r_reg_cnt(C_DATA_WIDTH-1 downto 0));
-			wi_pc		<= std_logic_vector(r_reg_cnt(C_DATA_WIDTH-1 downto 0));
-			
-			wait for 2*CLK_PERIOD;
-			checking_for( "I FAKE JUMP: addition of imm and din0: " & INTEGER'IMAGE(to_integer(unsigned(wi_din0))) & " + " & INTEGER'IMAGE(to_integer(signed(wi_imm))) & " = " & INTEGER'IMAGE(to_integer(signed(wo_pc_debug))));
-			check_condition(wo_pc_debug = std_logic_vector( to_signed( (to_integer(unsigned(wi_din0)) + to_integer(signed(wi_imm))) , C_DATA_WIDTH) ));
-			wait for CLK_PERIOD;
-			checking_for( "I FAKE JUMP: addition of pc and 4: " & INTEGER'IMAGE(to_integer(unsigned(wi_pc))) & " + " & INTEGER'IMAGE(4) & " = " & INTEGER'IMAGE(to_integer(unsigned(wo_debug))));
-			check_condition(wo_debug = std_logic_vector( to_signed( (to_integer(unsigned(wi_pc)) + 4) , C_DATA_WIDTH) ));
-			
-			wait for 2*CLK_PERIOD;
-			r_reg_cnt <= r_reg_cnt + 1;
-			
-			wait until w_ce = '1';	--STOP
-		end loop;
-			
-			r_reg_cnt <= (others => '0');
-*/		
+
 		-----------------------------------------------------------------------
 		--------					BRANCH INSTRUCTIONS					-------
 		-----------------------------------------------------------------------
@@ -939,6 +925,60 @@ begin
 			
 			r_reg_cnt <= (others => '0');
 
+		-----------------------------------------------------------------------
+		--------					LOAD INSTRUCTIONS					-------
+		-----------------------------------------------------------------------
+		L_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
+			-- START
+			wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
+			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
+			wi_inst		<= I;
+			wi_load		<= '1';
+			wi_funct3	<= "000";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
+			wi_funct7	<= (others => '0');	-- bit (5) decides modes of certain operations 0/1 (ADD/SUB | SRL/SRA)
+			wi_din0		<= std_logic_vector(r_reg_cnt(C_DATA_WIDTH-1 downto 0));
+			wi_din1		<= (others => '0');
+			wi_imm		<= std_logic_vector(r_reg_cnt(2*C_DATA_WIDTH-1 downto C_DATA_WIDTH));
+			wi_pc		<= (others => '0');
+			
+			wait for 2*CLK_PERIOD;
+			checking_for( "LOAD: output address = register0(" & INTEGER'IMAGE(to_integer(signed(wi_din0))) & ") + imm(" & INTEGER'IMAGE(to_integer(signed(wi_imm))) & ") = " & INTEGER'IMAGE(to_integer(signed(wo_addr_debug))));
+			check_condition(wo_addr_debug = std_logic_vector( to_signed( (to_integer(signed(wi_din0)) + to_integer(signed(wi_imm))) , C_DATA_WIDTH) ));
+			wait for 2*CLK_PERIOD;
+			r_reg_cnt <= r_reg_cnt + 1;
+			
+			wait until w_ce = '1';	--STOP
+		end loop;
+			
+			r_reg_cnt <= (others => '0');
+
+		-----------------------------------------------------------------------
+		--------					STORE INSTRUCTIONS					-------
+		-----------------------------------------------------------------------
+		S_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
+			-- START
+			wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
+			wi_jump		<= '-';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
+			wi_inst		<= S;
+			wi_load		<= '-';
+			wi_funct3	<= "000";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
+			wi_funct7	<= (others => '0');	-- bit (5) decides modes of certain operations 0/1 (ADD/SUB | SRL/SRA)
+			wi_din0		<= std_logic_vector(r_reg_cnt(C_DATA_WIDTH-1 downto 0));
+			wi_din1		<= (others => '0');
+			wi_imm		<= std_logic_vector(r_reg_cnt(2*C_DATA_WIDTH-1 downto C_DATA_WIDTH));
+			wi_pc		<= (others => '0');
+			
+			wait for 2*CLK_PERIOD;
+			checking_for( "STORE: output address = register0(" & INTEGER'IMAGE(to_integer(signed(wi_din0))) & ") + imm(" & INTEGER'IMAGE(to_integer(signed(wi_imm))) & ") = " & INTEGER'IMAGE(to_integer(signed(wo_addr_debug))));
+			check_condition(wo_addr_debug = std_logic_vector( to_signed( (to_integer(signed(wi_din0)) + to_integer(signed(wi_imm))) , C_DATA_WIDTH) ));
+			wait for 2*CLK_PERIOD;
+			r_reg_cnt <= r_reg_cnt + 1;
+			
+			wait until w_ce = '1';	--STOP
+		end loop;
+			
+			r_reg_cnt <= (others => '0');
+
 
 		------------------------------------------------------------------------------------------------------------------
 
@@ -966,9 +1006,12 @@ begin
 	port map(
 		o_dout_DEBUG => wo_debug,
 		o_pc_DEBUG 	 => wo_pc_debug,
+		o_addr_DEBUG => wo_addr_debug,
 		i_gclk		 => w_clk,
 		i_ce		 => w_ce,
 		i_sel_a		 => wi_sel_a,
+		i_u_type	 => wi_u_type,
+		i_load	 	 => wi_load,
 		i_jump		 => wi_jump,
 		i_funct3	 => wi_funct3,
 		i_funct7	 => wi_funct7,
@@ -978,6 +1021,7 @@ begin
 		i_imm		 => wi_imm,
 		i_pc		 => wi_pc,
 		o_dout		 => wo_dout,
-		o_pc		 => wo_pc
+		o_pc		 => wo_pc,
+		o_addr		 => wo_addr
 	);
 end Behavioral;
