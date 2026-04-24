@@ -64,7 +64,7 @@ architecture Behavioral of top_alu_async_tb is
 	constant U : std_logic_vector(2 downto 0) := "100";
 	constant J : std_logic_vector(2 downto 0) := "101";
 	
-	signal wi_sel_a		: std_logic := '0';
+	--signal wi_sel_a		: std_logic := '0';
 	signal wi_jump		: std_logic := '0';
 	signal wi_u_type	: std_logic := '0';
 	signal wi_load		: std_logic := '0';
@@ -116,10 +116,7 @@ begin
 									severity_lvl	: in severity_level := error) is
 		begin
     		if condition then
-				report	LF & "--------------------------------------------------------" & LF &
-						LF & pass_message												& LF & 
-						LF & "--------------------------------------------------------" & LF 
-				severity note;
+				null;
 			else
 				assert	false 
 				report	LF & "--------------------------------------------------------" & LF &
@@ -233,7 +230,7 @@ begin
 		
 		AND_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '1';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= R;
 			wi_funct3	<= "111";          -- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -257,7 +254,7 @@ begin
 
 		OR_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '1';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= R;
 			wi_funct3	<= "110"; -- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -281,19 +278,19 @@ begin
 
 		XOR_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= R;
 			wi_funct3	<= "100"; -- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
 			wi_funct7	<= (others => '0');
 			wi_din0		<= std_logic_vector(r_reg_cnt(C_DATA_WIDTH-1 downto 0));
-			wi_din1		<= (others => '0');
-			wi_imm		<= std_logic_vector(r_reg_cnt(2*C_DATA_WIDTH-1 downto C_DATA_WIDTH));
+			wi_din1		<= std_logic_vector(r_reg_cnt(2*C_DATA_WIDTH-1 downto C_DATA_WIDTH));
+			wi_imm		<= (others => '0');
 			wi_pc		<= (others => '0');
 			
 			wait for 2*CLK_PERIOD;
 			checking_for("REG: bitwise XOR");
-			check_condition(wo_dout = (wi_din0 XOR wi_imm));    -- now working with i_imm, not din1
+			check_condition(wo_dout = (wi_din0 XOR wi_din1));    -- now working with i_imm, not din1
 			
 			wait for 2*CLK_PERIOD;
 			r_reg_cnt <= r_reg_cnt + 1;
@@ -305,7 +302,7 @@ begin
 
 		ADD_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '1';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= R;
 			wi_funct3	<= "000";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -329,7 +326,7 @@ begin
 
 		SUB_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '1';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= R;
 			wi_funct3	<= "000";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -353,7 +350,7 @@ begin
 
 		SLT_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '1';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= R;
 			wi_funct3	<= "010";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -377,7 +374,7 @@ begin
 
 		SLTU_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '1';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= R;
 			wi_funct3	<= "011";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -401,7 +398,7 @@ begin
 
 		SLL_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '1';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= R;
 			wi_funct3	<= "001";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -425,7 +422,7 @@ begin
 
 		SRL_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '1';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= R;
 			wi_funct3	<= "101";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -449,7 +446,7 @@ begin
 
 		SRA_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '1';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= R;
 			wi_funct3	<= "101";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -471,14 +468,14 @@ begin
 			
 			r_reg_cnt <= (others => '0');
 
-		
+
 		-----------------------------------------------------------------------
 		-------					IMMEDIATE INSTRUCTIONS					-------
 		-----------------------------------------------------------------------
 
 		I_AND_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= I;
 			wi_funct3	<= "111";          -- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -502,7 +499,7 @@ begin
 
 		I_OR_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= I;
 			wi_funct3	<= "110"; -- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -526,31 +523,31 @@ begin
 
 		I_XOR_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '1';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= I;
 			wi_funct3	<= "100"; -- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
 			wi_funct7	<= (others => '0');
 			wi_din0		<= std_logic_vector(r_reg_cnt(C_DATA_WIDTH-1 downto 0));
-			wi_din1		<= std_logic_vector(r_reg_cnt(2*C_DATA_WIDTH-1 downto C_DATA_WIDTH));
-			wi_imm		<= (others => '0');
+			wi_din1		<= (others => '0');
+			wi_imm		<= std_logic_vector(r_reg_cnt(2*C_DATA_WIDTH-1 downto C_DATA_WIDTH));
 			wi_pc		<= (others => '0');
 			
 			wait for 2*CLK_PERIOD;
 			checking_for("IMM: bitwise XOR");
-			check_condition(wo_dout = (wi_din0 XOR wi_din1));    -- now working with i_imm, not din1
+			check_condition(wo_dout = (wi_din0 XOR wi_imm));    -- now working with i_imm, not din1
 			
 			wait for 2*CLK_PERIOD;
 			r_reg_cnt <= r_reg_cnt + 1;
 			
 			wait for 6*CLK_PERIOD;	--STOP
 		end loop;
-			
+		
 			r_reg_cnt <= (others => '0');
 
 		I_ADD_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= I;
 			wi_funct3	<= "000";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -574,7 +571,7 @@ begin
 
 		I_SUB_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= I;
 			wi_funct3	<= "000";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -598,7 +595,7 @@ begin
 
 		I_SLT_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= I;
 			wi_funct3	<= "010";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -617,12 +614,12 @@ begin
 			
 			wait for 6*CLK_PERIOD;	--STOP
 		end loop;
-			
+		
 			r_reg_cnt <= (others => '0');
 
 		I_SLTU_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= I;
 			wi_funct3	<= "011";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -646,7 +643,7 @@ begin
 
 		I_SLL_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= I;
 			wi_funct3	<= "001";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -670,7 +667,7 @@ begin
 
 		I_SRL_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= I;
 			wi_funct3	<= "101";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -694,7 +691,7 @@ begin
 
 		I_SRA_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= I;
 			wi_funct3	<= "101";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -716,11 +713,11 @@ begin
 			
 			r_reg_cnt <= (others => '0');
 		
-		-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
-		
+
+
 		I_jump_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '1';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= I;
 			wi_funct3	<= "000";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -750,7 +747,7 @@ begin
 		-----------------------------------------------------------------------
 		B_eq_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= B;
 			wi_funct3	<= "000";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -774,7 +771,7 @@ begin
 
 		B_neq_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= B;
 			wi_funct3	<= "001";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -798,7 +795,7 @@ begin
 
 		B_lt_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= B;
 			wi_funct3	<= "100";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -822,7 +819,7 @@ begin
 
 		B_meq_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= B;
 			wi_funct3	<= "101";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -846,7 +843,7 @@ begin
 
 		B_ltu_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= B;
 			wi_funct3	<= "110";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -870,7 +867,7 @@ begin
 
 		B_mequ_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= B;
 			wi_funct3	<= "111";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -897,7 +894,7 @@ begin
 		-----------------------------------------------------------------------
 		J_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '0';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= J;
 			wi_funct3	<= "000";			-- 000 ADD/SUB1 | 001 SLL  | 010 SLT  | 011 SLTU | 100 XOR | 101 SRL/SRA1| 110 OR 	| 111 AND
@@ -927,7 +924,7 @@ begin
 		-----------------------------------------------------------------------
 		L_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '0';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= I;
 			wi_load		<= '1';
@@ -954,7 +951,7 @@ begin
 		-----------------------------------------------------------------------
 		S_loop: for k in 0 to 2**(2*C_DATA_WIDTH)-1 loop
 			-- START
-			wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '-';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_inst		<= S;
 			wi_load		<= '-';
@@ -1001,7 +998,7 @@ begin
 		DATA_WIDTH	=> C_DATA_WIDTH
 	)
 	port map(
-		i_sel_a		 => wi_sel_a,
+		--i_sel_a		 => wi_sel_a,
 		i_u_type	 => wi_u_type,
 		i_load	 	 => wi_load,
 		i_jump		 => wi_jump,

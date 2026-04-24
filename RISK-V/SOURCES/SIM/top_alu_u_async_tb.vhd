@@ -64,7 +64,7 @@ architecture Behavioral of top_alu_u_async_tb is
 	constant U : std_logic_vector(2 downto 0) := "100";
 	constant J : std_logic_vector(2 downto 0) := "101";
 	
-	signal wi_sel_a		: std_logic := '0';
+	--signal wi_sel_a		: std_logic := '0';
 	signal wi_jump		: std_logic := '0';
 	signal wi_u_type	: std_logic := '0';
 	signal wi_load		: std_logic := '0';
@@ -115,10 +115,7 @@ begin
 									severity_lvl	: in severity_level := error) is
 		begin
     		if condition then
-				report	LF & "--------------------------------------------------------" & LF &
-						LF & pass_message												& LF & 
-						LF & "--------------------------------------------------------" & LF 
-				severity note;
+				null;
 			else
 				assert	false 
 				report	LF & "--------------------------------------------------------" & LF &
@@ -137,7 +134,7 @@ begin
 		-----------------------------------------------------------------------
 		U0_loop: for k in 0 to 2**(19)-1 loop
 			-- START
-			wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '-';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_load		<= '-';				-- load instruction
 			wi_u_type	<= '1';				-- type of U instruction
@@ -163,7 +160,7 @@ begin
 		
 		U1_loop: for k in 0 to 2**(19)-1 loop
 			-- START
-			wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
+			--wi_sel_a	<= '-';				-- '1' = work with data1 | '0' work with imm
 			wi_jump		<= '-';				-- ONLY IN inst = I, '1' = program counter operation | '0' = normal inst = R commands
 			wi_load		<= '-';				-- load instruction
 			wi_u_type	<= '0';				-- type of U instruction
@@ -210,7 +207,7 @@ begin
 		DATA_WIDTH	=> C_DATA_WIDTH
 	)
 	port map(
-		i_sel_a		 => wi_sel_a,
+		--i_sel_a		 => wi_sel_a,
 		i_u_type	 => wi_u_type,
 		i_load	 	 => wi_load,
 		i_jump		 => wi_jump,
