@@ -4,15 +4,15 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity Instruction_Cache is
     Port ( 
-           --INPUTS
-           clk : in STD_LOGIC;
-           w_en : in STD_LOGIC;
-           w_addr : in STD_LOGIC_VECTOR (3 downto 0);
-           r_addr : in STD_LOGIC_VECTOR (3 downto 0);
-           w_data : in STD_LOGIC_VECTOR (7 downto 0);
+            --INPUTS
+            clk     : in STD_LOGIC;
+            w_en    : in STD_LOGIC;
+            addr    : in STD_LOGIC_VECTOR (31 downto 0);
+            w_data  : in STD_LOGIC_VECTOR (31 downto 0);
            
            --OUTPUTS
-           r_data : out STD_LOGIC_VECTOR (7 downto 0));
+           r_data : out STD_LOGIC_VECTOR (31 downto 0)
+        );
            
 end Instruction_Cache;
 
@@ -33,10 +33,13 @@ begin
         if rising_edge(clk) then
         --write
             if (w_en = '1') then
-                mem(to_integer(unsigned(w_addr))) <= w_data;
+                mem(to_integer(unsigned(addr))+0) <= w_data( 7 downto  0);
+                mem(to_integer(unsigned(addr))+1) <= w_data(15 downto  8);
+                mem(to_integer(unsigned(addr))+2) <= w_data(23 downto 16);
+                mem(to_integer(unsigned(addr))+3) <= w_data(31 downto 24);
             end if;
         --read
-                r_data <= mem(to_integer(unsigned(r_addr)));
+            r_data <= mem(to_integer(unsigned(addr))+3) & mem(to_integer(unsigned(addr))+2) & mem(to_integer(unsigned(addr))+1) & mem(to_integer(unsigned(addr))+0);
         end if;
     end process;
     
