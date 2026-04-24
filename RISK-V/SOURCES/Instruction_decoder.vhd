@@ -42,7 +42,9 @@ entity Instruction_decoder is
             jump_f              : out STD_LOGIC;
             PC_adding_f         : out STD_LOGIC;
             memory_use_f        : out STD_LOGIC;
-
+            reg_write_f         : out STD_LOGIC;
+            mem_write_f         : out STD_LOGIC;
+            
             bite_cound_memory   : out STD_LOGIC_VECTOR(1 downto 0);
             bite_type_memory    : out STD_LOGIC; -- 0 for unsigned, 1 for signed
 
@@ -86,6 +88,8 @@ begin
                 jump_f <= '0';
                 PC_adding_f <= '0';
                 memory_use_f <= '0';
+                reg_write_f <= '1';
+                mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
                 bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
             when "0101111" =>
@@ -99,6 +103,8 @@ begin
                 jump_f <= '0';
                 PC_adding_f <= '0';
                 memory_use_f <= '0';
+                reg_write_f <= '1';
+                mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
                 bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
 
@@ -113,6 +119,8 @@ begin
                 jump_f <= '0';
                 PC_adding_f <= '0';
                 memory_use_f <= '1';
+                reg_write_f <= '1';
+                mem_write_f <= '0';
                 bite_cound_memory <= instruct(13 downto 12);
                 bite_type_memory <= not instruct(14); -- 0 for unsigned, 1 for signed
             when "0010011" =>
@@ -126,6 +134,8 @@ begin
                 jump_f <= '0';
                 PC_adding_f <= '0';
                 memory_use_f <= '0';
+                reg_write_f <= '1';
+                mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
                 bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed           
             when "1100111" =>
@@ -139,6 +149,8 @@ begin
                 jump_f <= '1';
                 PC_adding_f <= '0';
                 memory_use_f <= '0';
+                reg_write_f <= '1';
+                mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
                 bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
             when "1110011" =>  -- ???
@@ -152,21 +164,25 @@ begin
                 jump_f <= '1'; -- ???
                 PC_adding_f <= '0';
                 memory_use_f <= '0'; -- ???
+                reg_write_f <= '1';
+                mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
                 bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
 
 
             when "0100011" =>
                 instruct_typ <= S;
-                rd  <= to_unsigned(0, 5);
                 funct_3 <= instruct(14 downto 12);
                 funct_7 <= (others => '0');
+                rd  <= to_unsigned(0, 5);
                 rs1 <= unsigned(instruct(19 downto 15));
                 rs2 <= unsigned(instruct(24 downto 20));
                 imm <= signed((31 downto 12 => instruct(31)) & instruct(31 downto 25) & instruct(11 downto 7));
                 jump_f <= '0';
                 PC_adding_f <= '0';
                 memory_use_f <= '1';
+                reg_write_f <= '0';
+                mem_write_f <= '1';
                 bite_cound_memory <= instruct(13 downto 12);
                 bite_type_memory <= not instruct(14); -- 0 for unsigned, 1 for signed
 
@@ -182,6 +198,8 @@ begin
                 jump_f <= '0';
                 PC_adding_f <= '1';
                 memory_use_f <= '0';
+                reg_write_f <= '0';
+                mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
                 bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
 
@@ -198,6 +216,8 @@ begin
                 branch_f <= '0';
                 PC_adding_f <= '0';
                 memory_use_f <= '0';
+                reg_write_f <= '1';
+                mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
                 bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
             when "0010111" =>
@@ -211,6 +231,8 @@ begin
                 jump_f <= '0';
                 PC_adding_f <= '1';
                 memory_use_f <= '0';
+                reg_write_f <= '1';
+                mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
                 bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
 
@@ -225,6 +247,8 @@ begin
                 jump_f <= '1';
                 PC_adding_f <= '1';
                 memory_use_f <= '0';
+                reg_write_f <= '1';
+                mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
                 bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
             
@@ -239,6 +263,8 @@ begin
                 jump_f <= '0';
                 PC_adding_f <= '0';
                 memory_use_f <= '0';
+                reg_write_f <= '0';
+                mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
                 bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
 

@@ -23,16 +23,14 @@ end Data_memory;
 
 architecture Behavioral of Data_memory is
 
-    --Declare memory  
-    --INSTRUCTION MEMORY IS (4500*2) --> 9 kBytes 
+    --Declare memory
+    --INSTRUCTION MEMORY IS (4500*2) --> 9 kBytes
     type mem_type is array (0 to 4500*2-1) of std_logic_vector(7 downto 0);
     signal mem : mem_type := (others => (others => '0'));
-    
+
     --Memory should be implemented as block RAM
     attribute ram_style : string;
     attribute ram_style of mem : signal is "block";
-
-
 
 begin
     process(clk)
@@ -58,13 +56,13 @@ begin
                     when others =>
                         null;
                 end CASE;
-            else              
+            else
                 CASE RW_Size is
                     when "00" =>
                         if UnSi_flag = '1' then
                             r_data <= (others => mem(to_integer(unsigned(addr)))(7)) & mem(to_integer(unsigned(addr)));
                         else
-                            r_data <= (others => '0') & mem(to_integer(unsigned(addr))); 
+                            r_data <= (others => '0') & mem(to_integer(unsigned(addr)));
                         end if;
                     when "01" =>
                         if UnSi_flag = '1' then
@@ -88,7 +86,3 @@ begin
     end process;
     
 end Behavioral;
-
-
-
-0100 0010  0001 0001  0000 0000  0000 0000

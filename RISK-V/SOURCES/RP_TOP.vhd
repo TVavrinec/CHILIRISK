@@ -33,8 +33,10 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity RP_TOP is
     Port ( 
-        CLK : in STD_LOGIC;
-        RST : in STD_LOGIC
+            CLK : in STD_LOGIC;
+            RST : in STD_LOGIC;
+
+            o_dout : out STD_LOGIC_VECTOR (31 downto 0);
         );
 end RP_TOP;
 
@@ -52,20 +54,15 @@ architecture Behavioral of RP_TOP is
     );
     END COMPONENT ce_gen;
 
-    COMPONENT top_alu is
+    COMPONENT top_alu_async is
 	generic(
 		DATA_WIDTH	: positive := 32
 	);
 	port(
-		o_dout_DEBUG	: out	std_logic_vector(DATA_WIDTH-1 downto 0);
-		o_pc_DEBUG		: out	std_logic_vector(DATA_WIDTH-1 downto 0);
-
-		i_gclk		: in	std_logic;
-		i_ce		: in	std_logic;
-
 		i_sel_a		: in	std_logic;						-- select pin for reg 1
-		--i_branch	: in	std_logic;						-- r w branching?
 		i_jump		: in	std_logic;						-- r w jumping?
+		i_u_type	: in 	std_logic;						-- type of U instruction
+		i_load		: in 	std_logic;						-- load operations with imm
 		i_funct3	: in	std_logic_vector(2 downto 0);	-- funct3
 		i_funct7	: in	std_logic_vector(6 downto 0);	-- funct7(5), decides modes of certain operations (ADD/SUB | SRL/SRA)
 		i_inst_type	: in	std_logic_vector(2 downto 0);	-- type of instruction; 000 - R | 001 - I | 010 - S | 011 - B | 100 - U | 101 - J
@@ -75,10 +72,11 @@ architecture Behavioral of RP_TOP is
 		i_imm		: in	std_logic_vector(DATA_WIDTH-1 downto 0); -- immediate
 		i_pc		: in	std_logic_vector(DATA_WIDTH-1 downto 0); -- program counter
 		
-		o_dout		: out	std_logic_vector(DATA_WIDTH-1 downto 0); -- data out
-		o_pc		: out	std_logic_vector(DATA_WIDTH-1 downto 0)  -- program counter
+		o_dout		: out	std_logic_vector(DATA_WIDTH-1 downto 0);	 -- data out
+		o_pc		: out	std_logic_vector(DATA_WIDTH-1 downto 0);	 -- program counter
+		o_addr		: out	std_logic_vector(DATA_WIDTH-1 downto 0)
 	);
-    END COMPONENT top_alu;
+    END COMPONENT top_alu_async;
 
 
     COMPONENT Reg_file is
@@ -92,7 +90,8 @@ architecture Behavioral of RP_TOP is
             WRITE_DATA   : in SIGNED  (31 downto 0);
             
             DATA_RED1    : out SIGNED (31 downto 0);
-            DATA_RED2    : out SIGNED (31 downto 0)
+            DATA_RED2    : out SIGNED (31 downto 0);
+            REG_31       : out SIGNED (31 downto 0)
         );
     END COMPONENT Reg_file;
     
@@ -119,6 +118,8 @@ architecture Behavioral of RP_TOP is
             jump_f              : out STD_LOGIC;
             PC_adding_f         : out STD_LOGIC;
             memory_use_f        : out STD_LOGIC;
+            reg_write_f         : out STD_LOGIC;
+            mem_write_f         : out STD_LOGIC;
 
             bite_cound_memory   : out STD_LOGIC_VECTOR(1 downto 0);
             bite_type_memory    : out STD_LOGIC; -- 0 for unsigned, 1 for signed
@@ -175,11 +176,24 @@ architecture Behavioral of RP_TOP is
     SIGNAL jump_f              : STD_LOGIC;
     SIGNAL PC_adding_f         : STD_LOGIC;
     SIGNAL memory_use_f        : STD_LOGIC;
-
+    SIGNAL reg_write_f         : STD_LOGIC;
+    SIGNAL mem_write_f         : STD_LOGIC;
     -- CONTROL SIGNALS FOR MEMORY
     SIGNAL bite_cound_memory   : STD_LOGIC_VECTOR(1 downto 0);
     SIGNAL bite_type_memory    : STD_LOGIC; -- 0 for unsigned, 1 for signed
-
+    
+    SIGNAL ADDR_MEM            : STD_LOGIC_VECTOR(31 downto 0);
+    
+    SIGNAL memory_data_out     : STD_LOGIC_VECTOR(31 downto 0);
+    
+    -- PROGRAM COUNTER SIGNALS
+    SIGNAL PC_JUMP             : SIGNED(31 downto 0);
+    SIGNAL PC                  : UNSIGNED(31 downto 0);
+    SIGNAL PC_NEXT             : UNSIGNED(31 downto 0);
+    
+    -- IMMEDIATE SIGNAL
+    SIGNAL imm                 : SIGNED(31 downto 0);
+    
     -- REGISTERS SIGNALS
     SIGNAL rs1_addr                 : UNSIGNED(4 downto 0);
     SIGNAL rs2_addr                 : UNSIGNED(4 downto 0);
@@ -189,13 +203,9 @@ architecture Behavioral of RP_TOP is
     SIGNAL rs2_value                : UNSIGNED(31 downto 0);
     SIGNAL rd_value                 : UNSIGNED(31 downto 0);
     
-    -- IMMEDIATE SIGNAL
-    SIGNAL imm                 : SIGNED(31 downto 0);
-
-    -- PROGRAM COUNTER SIGNALS
-    SIGNAL PC_JUMP             : SIGNED(31 downto 0);
-    SIGNAL PC                  : UNSIGNED(31 downto 0);
-    SIGNAL PC_NEXT             : UNSIGNED(31 downto 0);
+        -- Non Components Signals
+        SIGNAL NCS_rd_value             : UNSIGNED(31 downto 0);
+    
 
 begin ------------------------------------ Behavioral description of RP_TOP ------------------------------------ 
 
@@ -210,23 +220,17 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
             CE_O    => CLK_B 
         );
 
-    ALU_inst : top_alu
+    top_alu_async_inst : top_alu_async
 	generic map(
             DATA_WIDTH	=> 32
         )
 	port map(
-            -- o_dout_DEBUG	: out	std_logic_vector(DATA_WIDTH-1 downto 0);
-            -- o_pc_DEBUG		: out	std_logic_vector(DATA_WIDTH-1 downto 0);
-
-            i_gclk		=> CLK,
-            i_ce		=> CLK_B,
-
-            i_sel_a		=> in	std_logic;  -- select pin for reg 1
-            --i_branch	=> in	std_logic;  -- r w branching?
-            i_jump		=> jump_f,          -- r w jumping?
-            i_funct3	=> funct_3,         -- funct3
-            i_funct7	=> funct_7,         -- funct7(5), decides modes of certain operations (ADD/SUB | SRL/SRA)
-            i_inst_type	=> instruct_typ,    -- type of instruction; 000 - R | 001 - I | 010 - S | 011 - B | 100 - U | 101 - J
+            i_jump		=> jump_f,              -- r w jumping?
+            i_u_type	=> bite_type_memory,	-- type of U instruction
+            i_load		=> memory_use_f,		-- load operations with imm
+            i_funct3	=> funct_3,             -- funct3
+            i_funct7	=> funct_7,             -- funct7(5), decides modes of certain operations (ADD/SUB | SRL/SRA)
+            i_inst_type	=> instruct_typ,        -- type of instruction; 000 - R | 001 - I | 010 - S | 011 - B | 100 - U | 101 - J
 
             i_din0		=> rs1_value,   -- data in 0
             i_din1		=> rs2_value,   -- data in 1
@@ -234,7 +238,8 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
             i_pc		=> PC,          -- program counter
             
             o_dout		=> rd_value,    -- data out
-            o_pc		=> PC_JUMP      -- program counter
+            o_pc		=> PC_JUMP,     -- program counter
+            o_addr      => ADDR_MEM
         );
 
     Reg_file_inst : Reg_file
@@ -245,10 +250,11 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
             READ_REG1    : rs1_addr,
             READ_REG2    : rs2_addr,
             WRITE_REG    : rd_addr,
-            WRITE_DATA   : rd_value,
+            WRITE_DATA   : NCS_rd_value,
             
             DATA_RED1    : rs1_value,
-            DATA_RED2    : rs2_value
+            DATA_RED2    : rs2_value,
+            REG_31       : o_dout
         );
     
     Program_counter_inst : Program_counter
@@ -266,13 +272,14 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
     port map ( 
             instruct            => instruct,
 
-            instruct_typ        => instruct_typ,            
+            instruct_typ        => instruct_typ,
             funct_3             => funct_3,
             funct_7             => funct_7,
 
             jump_f              => jump_f,
             PC_adding_f         => PC_adding_f,
             memory_use_f        => memory_use_f,
+            reg_write_f         => reg_write_f,
 
             bite_cound_memory   => bite_cound_memory,
             bite_type_memory    => bite_type_memory, -- 0 for unsigned, 1 for signed
@@ -299,18 +306,28 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
     Data_memory_inst : Data_memory
     port map ( 
            --INPUTS
-           clk      : CLK;
-           w_en     : in STD_LOGIC;
-           addr     : in STD_LOGIC_VECTOR (31 downto 0);
-           w_data   : in STD_LOGIC_VECTOR (31 downto 0);
+           clk      => CLK;
+           w_en     => mem_write_f,
+           addr     => ADDR_MEM,
+           w_data   => rd_value,
 
            RW_Size   => bite_cound_memory,
            UnSi_flag => bite_type_memory,
 
            
            --OUTPUTS
-           r_data : out STD_LOGIC_VECTOR (31 downto 0)
+           r_data => memory_data_out
         );
         
+
+
+    process (rd_value, mem_write_f, memory_data_out) is
+    begin
+        if mem_write_f = '1' then
+            NCS_rd_value <= unsigned(memory_data_out);
+        else
+            NCS_rd_value <= rd_value;
+        end if;
+    end process;
 
 end Behavioral;

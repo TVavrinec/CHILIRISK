@@ -40,8 +40,10 @@ entity Reg_file is
             READ_REG2    : in UNSIGNED (4 downto 0);
             WRITE_REG    : in UNSIGNED (4 downto 0);
             WRITE_DATA   : in SIGNED  (31 downto 0);
+            
             DATA_RED1    : out SIGNED (31 downto 0);
-            DATA_RED2    : out SIGNED (31 downto 0)
+            DATA_RED2    : out SIGNED (31 downto 0);
+            REG_31       : out SIGNED (31 downto 0)
         );
 end Reg_file;
 
@@ -68,6 +70,7 @@ END PROCESS;
 
 DATA_RED1 <= regs(to_integer(READ_REG1));
 DATA_RED2 <= regs(to_integer(READ_REG2));
+REG_31    <= regs(31);
 
 
 end Behavioral;
