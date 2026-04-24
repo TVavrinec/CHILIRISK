@@ -24,7 +24,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
@@ -33,7 +33,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity RP_TOP is
     Port ( 
-        CLK : in STD_LOGIC,
+        CLK : in STD_LOGIC;
         RST : in STD_LOGIC
         );
 end RP_TOP;
@@ -190,7 +190,7 @@ architecture Behavioral of RP_TOP is
     SIGNAL rd_value                 : UNSIGNED(31 downto 0);
     
     -- IMMEDIATE SIGNAL
-    SIGNAL imm                 : SIGNED(31 downto 0)
+    SIGNAL imm                 : SIGNED(31 downto 0);
 
     -- PROGRAM COUNTER SIGNALS
     SIGNAL PC_JUMP             : SIGNED(31 downto 0);
@@ -200,21 +200,21 @@ architecture Behavioral of RP_TOP is
 begin ------------------------------------ Behavioral description of RP_TOP ------------------------------------ 
 
     ce_gen_inst : ce_gen
-    GENERIC (
-            G_DIV_FACT          : POSITIVE := 10
+    generic map (
+            G_DIV_FACT => 10
         );
-    PORT (
-            CLK                 : CLK,
-            CE                  : '1',
-            SRST                : '0',
-            CE_O                : CLK_B 
+    port map (
+            CLK     => CLK,
+            CE      => '1',
+            SRST    => '0',
+            CE_O    => CLK_B 
         );
 
     ALU_inst : top_alu
-	generic(
-            DATA_WIDTH	: positive := 32
-        );
-	port(
+	generic map(
+            DATA_WIDTH	=> 32
+        )
+	port map(
             -- o_dout_DEBUG	: out	std_logic_vector(DATA_WIDTH-1 downto 0);
             -- o_pc_DEBUG		: out	std_logic_vector(DATA_WIDTH-1 downto 0);
 
@@ -238,7 +238,7 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
         );
 
     Reg_file_inst : Reg_file
-    Port ( 
+    port map ( 
             -- CLK          : in STD_LOGIC;
             REG_WRITE_EN : in STD_LOGIC;
             REG_RST      : RST,
@@ -252,7 +252,7 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
         );
     
     Program_counter_inst : Program_counter
-    Port ( 
+    port map ( 
             CLK         => CLK,
             CLK_EN      => CLK_B,
             JUMP_F      => jump_f,
@@ -263,7 +263,7 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
         );
 
     Instruction_decoder_inst : Instruction_decoder
-    Port ( 
+    port map ( 
             instruct            => instruct,
 
             instruct_typ        => instruct_typ,            
@@ -285,7 +285,7 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
         );
 
     Instruction_Cache_inst : Instruction_Cache
-    Port ( 
+    port map ( 
            --INPUTS
             clk     => CLK,
             w_en    => '0',            -- potenciálně do budoucna -> NOT RST and nějakej signál z prográmátoru,
@@ -297,7 +297,7 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
         );
 
     Data_memory_inst : Data_memory
-    Port ( 
+    port map ( 
            --INPUTS
            clk      : CLK;
            w_en     : in STD_LOGIC;
