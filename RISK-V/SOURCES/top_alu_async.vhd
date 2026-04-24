@@ -33,7 +33,6 @@ entity top_alu_async is
 		DATA_WIDTH	: positive := 32
 	);
 	port(
-		i_sel_a		: in	std_logic;						-- select pin for reg 1
 		i_jump		: in	std_logic;						-- r w jumping?
 		i_u_type	: in 	std_logic;						-- type of U instruction
 		i_load		: in 	std_logic;						-- load operations with imm
@@ -54,28 +53,7 @@ end top_alu_async;
 
 architecture Behavioral of top_alu_async is
 
-	signal w_dmux : std_logic_vector(DATA_WIDTH-1 downto 0) := (others => '0');	-- i_sel_a mux
-
 begin
-
-	a_sel_mux_proc: process(all) is
-	begin
-		if (i_sel_a = '1') then										-- means we work with rs2, not imm
-							
-			w_dmux	<= i_din1;
-
-		else
-			if (i_inst_type = "001") then
-				if(i_funct3 = "001" OR i_funct3 = "101") then		-- when shifting with imm only
-					w_dmux	<= (DATA_WIDTH-1 downto 5 => '0') & i_imm(4 downto 0);
-				else
-					w_dmux	<= i_imm;
-				end if;
-			else
-				w_dmux	<= i_imm;
-			end if;
-		end if;
-	end process a_sel_mux_proc;
 		
 	ALU_proc: process(all) is
 		
@@ -158,21 +136,21 @@ begin
 			when "000" =>
 			
 			    if    i_funct3 = "000" then
-					o_dout <= f_addition   (i_din0, w_dmux, i_funct7(5));
+					o_dout <= f_addition   (i_din0, i_din1, i_funct7(5));
 				elsif i_funct3 = "001" then
-					o_dout <= f_left_shift (i_din0, w_dmux);
+					o_dout <= f_left_shift (i_din0, i_din1);
 				elsif i_funct3 = "010" then
-					o_dout <= f_set_less   (i_din0, w_dmux);
+					o_dout <= f_set_less   (i_din0, i_din1);
 				elsif i_funct3 = "011" then
-					o_dout <= f_set_less_u (i_din0, w_dmux);
+					o_dout <= f_set_less_u (i_din0, i_din1);
 				elsif i_funct3 = "100" then
-					o_dout <= i_din0 XOR w_dmux;
+					o_dout <= i_din0 XOR i_din1;
 				elsif i_funct3 = "101" then
-					o_dout <= f_right_shift(i_din0, w_dmux, i_funct7(5));
+					o_dout <= f_right_shift(i_din0, i_din1, i_funct7(5));
 				elsif i_funct3 = "110" then
-					o_dout <= i_din0 OR  w_dmux;
+					o_dout <= i_din0 OR  i_din1;
 				else
-					o_dout <= i_din0 AND w_dmux;
+					o_dout <= i_din0 AND i_din1;
 				end if;
 
 			--  Immediate
@@ -191,21 +169,21 @@ begin
 
 				else
 					    if    i_funct3 = "000" then
-							o_dout <= f_addition   (i_din0, w_dmux, i_funct7(5));
+							o_dout <= f_addition   (i_din0, i_imm, i_funct7(5));
 						elsif i_funct3 = "001" then
-							o_dout <= f_left_shift (i_din0, w_dmux);
+							o_dout <= f_left_shift (i_din0, (DATA_WIDTH-1 downto 5 => '0') & i_imm(4 downto 0));
 						elsif i_funct3 = "010" then
-							o_dout <= f_set_less   (i_din0, w_dmux);
+							o_dout <= f_set_less   (i_din0, i_imm);
 						elsif i_funct3 = "011" then
-							o_dout <= f_set_less_u (i_din0, w_dmux);
+							o_dout <= f_set_less_u (i_din0, i_imm);
 						elsif i_funct3 = "100" then
-							o_dout <= i_din0 XOR w_dmux;
+							o_dout <= i_din0 XOR i_imm;
 						elsif i_funct3 = "101" then
-							o_dout <= f_right_shift(i_din0, w_dmux, i_funct7(5));
+							o_dout <= f_right_shift(i_din0, (DATA_WIDTH-1 downto 5 => '0') & i_imm(4 downto 0), i_funct7(5));
 						elsif i_funct3 = "110" then
-							o_dout <= i_din0 OR  w_dmux;
+							o_dout <= i_din0 OR  i_imm;
 						else
-							o_dout <= i_din0 AND w_dmux;
+							o_dout <= i_din0 AND i_imm;
 						end if;
 				end if;
 			
