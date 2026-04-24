@@ -239,16 +239,6 @@
 	)
 	(wire
 		(pts
-			(xy 313.69 121.92) (xy 313.69 172.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3b996884-3b79-49bc-8068-22396c487ba9")
-	)
-	(wire
-		(pts
 			(xy 306.07 165.1) (xy 293.37 165.1)
 		)
 		(stroke
@@ -376,16 +366,6 @@
 			(type default)
 		)
 		(uuid "5f91da39-34d5-4747-a7e9-8531b5cbb5cd")
-	)
-	(wire
-		(pts
-			(xy 313.69 121.92) (xy 382.27 121.92)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5fff5833-9261-4c93-9be4-90d352c0eae4")
 	)
 	(wire
 		(pts
@@ -836,16 +816,6 @@
 			(type default)
 		)
 		(uuid "de5c3f8c-cbc0-4112-99e3-8971f0974611")
-	)
-	(wire
-		(pts
-			(xy 313.69 172.72) (xy 293.37 172.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e4bd8d70-d04b-4e70-98ca-85597118fb6d")
 	)
 	(wire
 		(pts
@@ -1358,16 +1328,6 @@
 		(pin "PC_adding_f" output
 			(at 293.37 170.18 0)
 			(uuid "23d50e3a-c65a-431d-a53f-89f75e52584a")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(pin "reg_use_f" output
-			(at 293.37 172.72 0)
-			(uuid "46e2dbf6-eaf2-41d1-82d7-d7964d2a73b6")
 			(effects
 				(font
 					(size 1.27 1.27)
