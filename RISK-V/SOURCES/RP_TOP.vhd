@@ -33,10 +33,10 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity RP_TOP is
     Port ( 
-            CLK : in STD_LOGIC;
-            RST : in STD_LOGIC;
+            CLK : IN STD_LOGIC;
+            RST : IN STD_LOGIC;
 
-            o_dout : out STD_LOGIC_VECTOR (31 downto 0);
+            o_dout : out STD_LOGIC_VECTOR (31 downto 0)
         );
 end RP_TOP;
 
@@ -199,12 +199,12 @@ architecture Behavioral of RP_TOP is
     SIGNAL rs2_addr                 : UNSIGNED(4 downto 0);
     SIGNAL rd_addr                  : UNSIGNED(4 downto 0);
 
-    SIGNAL rs1_value                : UNSIGNED(31 downto 0);
-    SIGNAL rs2_value                : UNSIGNED(31 downto 0);
-    SIGNAL rd_value                 : UNSIGNED(31 downto 0);
+    SIGNAL rs1_value                : STD_LOGIC_VECTOR(31 downto 0);
+    SIGNAL rs2_value                : STD_LOGIC_VECTOR(31 downto 0);
+    SIGNAL rd_value                 : STD_LOGIC_VECTOR(31 downto 0);
     
         -- Non Components Signals
-        SIGNAL NCS_rd_value             : UNSIGNED(31 downto 0);
+        SIGNAL NCS_rd_value             : SIGNED(31 downto 0);
     
 
 begin ------------------------------------ Behavioral description of RP_TOP ------------------------------------ 
@@ -212,7 +212,7 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
     ce_gen_inst : ce_gen
     generic map (
             G_DIV_FACT => 10
-        );
+        )
     port map (
             CLK     => CLK,
             CE      => '1',
@@ -232,29 +232,29 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
             i_funct7	=> funct_7,             -- funct7(5), decides modes of certain operations (ADD/SUB | SRL/SRA)
             i_inst_type	=> instruct_typ,        -- type of instruction; 000 - R | 001 - I | 010 - S | 011 - B | 100 - U | 101 - J
 
-            i_din0		=> rs1_value,   -- data in 0
-            i_din1		=> rs2_value,   -- data in 1
-            i_imm		=> imm,         -- immediate
-            i_pc		=> PC,          -- program counter
+            i_din0		=> STD_LOGIC_VECTOR(rs1_value),   -- data in 0
+            i_din1		=> STD_LOGIC_VECTOR(rs2_value),   -- data in 1
+            i_imm		=> STD_LOGIC_VECTOR(imm),         -- immediate
+            i_pc		=> STD_LOGIC_VECTOR(PC),          -- program counter
             
-            o_dout		=> rd_value,    -- data out
-            o_pc		=> PC_JUMP,     -- program counter
-            o_addr      => ADDR_MEM
+            o_dout		            => rd_value,    -- data out
+            STD_LOGIC_VECTOR(o_pc)  => PC_JUMP,     -- program counter
+            o_addr                  => ADDR_MEM
         );
 
     Reg_file_inst : Reg_file
     port map ( 
             -- CLK          : in STD_LOGIC;
-            REG_WRITE_EN : in STD_LOGIC;
-            REG_RST      : RST,
-            READ_REG1    : rs1_addr,
-            READ_REG2    : rs2_addr,
-            WRITE_REG    : rd_addr,
-            WRITE_DATA   : NCS_rd_value,
+            REG_WRITE_EN => reg_write_f,
+            REG_RST      => RST,
+            READ_REG1    => rs1_addr,
+            READ_REG2    => rs2_addr,
+            WRITE_REG    => rd_addr,
+            WRITE_DATA   => NCS_rd_value,
             
-            DATA_RED1    : rs1_value,
-            DATA_RED2    : rs2_value,
-            REG_31       : o_dout
+            SIGNED(DATA_RED1)    => rs1_value,
+            SIGNED(DATA_RED2)    => rs2_value,
+            SIGNED(REG_31)       => o_dout
         );
     
     Program_counter_inst : Program_counter
@@ -284,9 +284,9 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
             bite_cound_memory   => bite_cound_memory,
             bite_type_memory    => bite_type_memory, -- 0 for unsigned, 1 for signed
 
-            rs1                 => rs1_value,
-            rs2                 => rs2_value,
-            rd                  => rd_values,
+            UNSIGNED(rs1)       => rs1_value,
+            UNSIGNED(rs2)       => rs2_value,
+            UNSIGNED(rd)        => rd_value,
             
             imm                 => imm
         );
@@ -296,7 +296,7 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
            --INPUTS
             clk     => CLK,
             w_en    => '0',            -- potenciálně do budoucna -> NOT RST and nějakej signál z prográmátoru,
-            addr    => PC,
+            addr    => STD_LOGIC_VECTOR(PC),
             w_data  => (others => '0'), -- potenciálně do budoucna -> signál z prográmátoru,
            
            --OUTPUTS
@@ -306,10 +306,10 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
     Data_memory_inst : Data_memory
     port map ( 
            --INPUTS
-           clk      => CLK;
+           clk      => CLK,
            w_en     => mem_write_f,
            addr     => ADDR_MEM,
-           w_data   => rd_value,
+           w_data   => STD_LOGIC_VECTOR(rd_value),
 
            RW_Size   => bite_cound_memory,
            UnSi_flag => bite_type_memory,
@@ -324,9 +324,9 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
     process (rd_value, mem_write_f, memory_data_out) is
     begin
         if mem_write_f = '1' then
-            NCS_rd_value <= unsigned(memory_data_out);
+            NCS_rd_value <= signed(memory_data_out);
         else
-            NCS_rd_value <= rd_value;
+            NCS_rd_value <= signed(rd_value);
         end if;
     end process;
 

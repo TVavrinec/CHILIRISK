@@ -67,8 +67,8 @@ architecture Behavioral of Instruction_decoder is
     constant J : STD_LOGIC_VECTOR(2 downto 0) := "101";
 
     -- bite_type_memory definitions
-    constant _UNSIGNED_ : STD_LOGIC := '0';
-    constant _SIGNET_   : STD_LOGIC := '1';
+    constant UNSIGNED_F : STD_LOGIC := '0';
+    constant SIGNET_F   : STD_LOGIC := '1';
 
 
     SIGNAL opcode : STD_LOGIC_VECTOR (6 downto 0);
@@ -91,7 +91,7 @@ begin
                 reg_write_f <= '1';
                 mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
+                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
             when "0101111" =>
                 instruct_typ <= R;
                 funct_3 <= instruct(14 downto 12);
@@ -106,7 +106,7 @@ begin
                 reg_write_f <= '1';
                 mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
+                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
 
             when "0000011" =>
                 instruct_typ <= I;
@@ -137,7 +137,7 @@ begin
                 reg_write_f <= '1';
                 mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed           
+                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed           
             when "1100111" =>
                 instruct_typ <= I;
                 funct_3 <= instruct(14 downto 12);
@@ -152,7 +152,7 @@ begin
                 reg_write_f <= '1';
                 mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
+                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
             when "1110011" =>  -- ???
                 instruct_typ <= I;
                 funct_3 <= instruct(14 downto 12);
@@ -167,7 +167,7 @@ begin
                 reg_write_f <= '1';
                 mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
+                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
 
 
             when "0100011" =>
@@ -201,7 +201,7 @@ begin
                 reg_write_f <= '0';
                 mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
+                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
 
 
             when "0110111" =>
@@ -213,13 +213,12 @@ begin
                 rs2 <= to_unsigned(0, 5);
                 imm <= resize(signed(instruct(31 downto 12)) & to_signed(0, 12), imm'length);
                 jump_f <= '0';
-                branch_f <= '0';
                 PC_adding_f <= '0';
                 memory_use_f <= '0';
                 reg_write_f <= '1';
                 mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
+                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
             when "0010111" =>
                 instruct_typ <= U;
                 funct_3 <= (others => '0');
@@ -234,7 +233,7 @@ begin
                 reg_write_f <= '1';
                 mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
+                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
 
             when "1101111" =>
                 instruct_typ <= J;
@@ -250,7 +249,7 @@ begin
                 reg_write_f <= '1';
                 mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
+                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
             
             when others =>
                 instruct_typ <= R;
@@ -266,7 +265,7 @@ begin
                 reg_write_f <= '0';
                 mem_write_f <= '0';
                 bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= _UNSIGNED_; -- 0 for unsigned, 1 for signed
+                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
 
       END CASE; 
     END PROCESS;
