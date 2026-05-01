@@ -284,9 +284,9 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
             bite_cound_memory   => bite_cound_memory,
             bite_type_memory    => bite_type_memory, -- 0 for unsigned, 1 for signed
 
-            rs1                 => rs1,
-            rs2                 => rs2,
-            rd                  => rd,
+            rs1                 => rs1_value,
+            rs2                 => rs2_value,
+            rd                  => rd_values,
             
             imm                 => imm
         );
