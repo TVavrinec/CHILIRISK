@@ -17,8 +17,7 @@ entity Reg_file is
             WRITE_DATA   : in SIGNED  (31 downto 0);
             
             DATA_RED1    : out SIGNED (31 downto 0);
-            DATA_RED2    : out SIGNED (31 downto 0);
-            REG_31       : out SIGNED (31 downto 0)
+            DATA_RED2    : out SIGNED (31 downto 0)
         );
 end Reg_file;
 
@@ -26,7 +25,7 @@ architecture Behavioral of Reg_file is
 
 type t_vector is array (0 to 31) of SIGNED(31 downto 0); 
 
-SIGNAL regs : t_vector;
+SIGNAL regs : t_vector := ( others => (others => '0'));
 
 begin
 
@@ -46,7 +45,5 @@ END PROCESS;
 
 DATA_RED1 <= regs(to_integer(READ_REG1));
 DATA_RED2 <= regs(to_integer(READ_REG2));
-REG_31    <= regs(2);
-
 
 end Behavioral;

@@ -36,7 +36,10 @@ entity RP_TOP is
             CLK : IN STD_LOGIC;
             RST : IN STD_LOGIC;
 
-            o_dout : out STD_LOGIC_VECTOR (31 downto 0)
+            pin_in : IN STD_LOGIC_VECTOR (15 downto 0);
+
+            --OUTPUTS
+            pin_out : out STD_LOGIC_VECTOR (15 downto 0)
         );
 end RP_TOP;
 
@@ -89,8 +92,7 @@ architecture Behavioral of RP_TOP is
             WRITE_DATA   : in SIGNED  (31 downto 0);
             
             DATA_RED1    : out SIGNED (31 downto 0);
-            DATA_RED2    : out SIGNED (31 downto 0);
-            REG_31       : out SIGNED (31 downto 0)
+            DATA_RED2    : out SIGNED (31 downto 0)
         );
     END COMPONENT Reg_file;
        
@@ -149,17 +151,20 @@ architecture Behavioral of RP_TOP is
     COMPONENT Data_memory is
     Port ( 
            --INPUTS
-           clk : in STD_LOGIC;
-           w_en : in STD_LOGIC;
-           addr : in STD_LOGIC_VECTOR (31 downto 0);
-           w_data : in STD_LOGIC_VECTOR (31 downto 0);
+           clk       : in STD_LOGIC;
+           w_en      : in STD_LOGIC;
+           addr      : in STD_LOGIC_VECTOR (31 downto 0);
+           w_data    : in STD_LOGIC_VECTOR (31 downto 0);
 
-           RW_Size : in STD_LOGIC_VECTOR (1 downto 0);
-           UnSi_flag: in STD_LOGIC;
+           RW_Size   : in STD_LOGIC_VECTOR (1 downto 0);
+           UnSi_flag : in STD_LOGIC;
 
-           
+           pin_in       : in STD_LOGIC_VECTOR (15 downto 0);
+
+
            --OUTPUTS
-           r_data : out STD_LOGIC_VECTOR (31 downto 0));
+           r_data : out STD_LOGIC_VECTOR (31 downto 0);
+           pin_out : out STD_LOGIC_VECTOR (15 downto 0));
            
     END COMPONENT Data_memory;
 
@@ -262,8 +267,7 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
             WRITE_DATA   => NCS_rd_value,
             
             SIGNED(DATA_RED1)    => rs1_value,
-            SIGNED(DATA_RED2)    => rs2_value,
-            SIGNED(REG_31)       => o_dout
+            SIGNED(DATA_RED2)    => rs2_value
         );
 
     Instruction_decoder_inst : Instruction_decoder
@@ -317,10 +321,12 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
 
            RW_Size   => bite_cound_memory,
            UnSi_flag => bite_type_memory,
-
+           
+           pin_in    => pin_in,
            
            --OUTPUTS
-           r_data => memory_data_out
+           r_data => memory_data_out,
+           pin_out => pin_out
         );
       
       

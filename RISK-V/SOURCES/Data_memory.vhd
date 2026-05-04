@@ -7,17 +7,19 @@ use IEEE.NUMERIC_STD.ALL;
 entity Data_memory is
     Port ( 
            --INPUTS
-           clk : in STD_LOGIC;
-           w_en : in STD_LOGIC;
-           addr : in STD_LOGIC_VECTOR (31 downto 0);
-           w_data : in STD_LOGIC_VECTOR (31 downto 0);
+           clk          : in STD_LOGIC;
+           w_en         : in STD_LOGIC;
+           addr         : in STD_LOGIC_VECTOR (31 downto 0);
+           w_data       : in STD_LOGIC_VECTOR (31 downto 0);
 
-           RW_Size : in STD_LOGIC_VECTOR (1 downto 0);  -- 00  8bits 01 16 bits 10 32bits
-           UnSi_flag: in STD_LOGIC;
+           RW_Size      : in STD_LOGIC_VECTOR (1 downto 0);  -- 00  8bits 01 16 bits 10 32bits
+           UnSi_flag    : in STD_LOGIC;
 
-           
+           pin_in       : in STD_LOGIC_VECTOR (15 downto 0);
+
            --OUTPUTS
-           r_data : out STD_LOGIC_VECTOR (31 downto 0));
+           r_data  : out STD_LOGIC_VECTOR (31 downto 0);
+           pin_out : out STD_LOGIC_VECTOR (15 downto 0));
            
 end Data_memory;
 
@@ -46,6 +48,8 @@ begin
 
             word := mem(index);
 
+            pin_out <= mem(0)(31 downto 16);
+            mem(0)(15 downto 0) <= pin_in;
             ------------------
             -- WRITE
             ------------------
