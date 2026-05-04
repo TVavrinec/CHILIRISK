@@ -26,7 +26,7 @@ BEGIN
 ----------------------------------------------------------------------------------
 
 PROCESS (CLK) begin
-  IF rising_edge(CLK) THEN
+  IF falling_edge(CLK) THEN
     if SRST = '1' then
       cnt <= 0;  
     elsif CE = '1' then

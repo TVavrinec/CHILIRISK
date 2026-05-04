@@ -5,13 +5,19 @@ use IEEE.NUMERIC_STD.ALL;
 entity Instruction_Cache is
     Port ( 
             --INPUTS
-            clk     : in STD_LOGIC;
+            CLK     : in STD_LOGIC;
+            CLK_EN  : in STD_LOGIC;
+            
             w_en    : in STD_LOGIC;
-            addr    : in STD_LOGIC_VECTOR (31 downto 0);
             w_data  : in STD_LOGIC_VECTOR (31 downto 0);
            
-           --OUTPUTS
-           r_data : out STD_LOGIC_VECTOR (31 downto 0)
+            JUMP_F  : in STD_LOGIC;
+            PC_RST     : in STD_LOGIC;
+            PC_SET  : in UNSIGNED(31 downto 0);
+            
+            --OUTPUTS
+            PC      : out UNSIGNED(31 downto 0);
+            r_data  : out STD_LOGIC_VECTOR (31 downto 0)
         );
            
 end Instruction_Cache;
@@ -20,27 +26,68 @@ architecture Behavioral of Instruction_Cache is
 
     --Declare memory  
     --INSTRUCTION MEMORY IS 36863*8bits --> 36,864 kBytes 
-    type mem_type is array (0 to 36863) of std_logic_vector(7 downto 0);
-    signal mem : mem_type := (others => (others => '0'));
-    
+    type mem_type is array (0 to 9215) of std_logic_vector(31 downto 0);
+    signal mem : mem_type := (
+-- main (0x1CC)
+    115 => x"00A00713",
+    116 => x"2FAF07B7",
+    117 => x"07F78793",
+    118 => x"00000013",
+    119 => x"FFF78793",
+    120 => x"FE079CE3",
+    121 => x"FFF70713",
+    122 => x"FE071AE3",
+    123 => x"00008067",
+
+-- delay_sec (0x1F0)
+    124 => x"2FAF07B7",
+    125 => x"07F78793",
+    126 => x"00000013",
+    127 => x"FFF78793",
+    128 => x"FE0796E3",
+    129 => x"00008067",
+
+    others => (others => '0')
+    );
+        
     --Memory should be implemented as block RAM
     attribute ram_style : string;
     attribute ram_style of mem : signal is "block";
+
+    SIGNAL PC_internal : UNSIGNED(29 downto 0)  := (others => '0');
+    SIGNAL PC_internal_next : UNSIGNED(29 downto 0) := (others => '0');
     
 begin
-    process(clk)
+
+    process(CLK)
+        variable index : integer;
     begin
-        if rising_edge(clk) then
-        --write
-            if (w_en = '1') then
-                mem(to_integer(unsigned(addr))+0) <= w_data( 7 downto  0);
-                mem(to_integer(unsigned(addr))+1) <= w_data(15 downto  8);
-                mem(to_integer(unsigned(addr))+2) <= w_data(23 downto 16);
-                mem(to_integer(unsigned(addr))+3) <= w_data(31 downto 24);
+        if rising_edge(CLK) then
+            index := to_integer(unsigned(PC_internal_next));
+
+            IF PC_RST = '0' THEN
+                PC_internal <= TO_UNSIGNED(0, 30);
+            ELSIF CLK_EN = '1' THEN
+                PC_internal <= PC_internal_next;
+                r_data <= mem(index);
+            END IF;
+
+            -- write
+            if w_en = '1' then
+                mem(index) <= w_data;
             end if;
-        --read
-            r_data <= mem(to_integer(unsigned(addr))+3) & mem(to_integer(unsigned(addr))+2) & mem(to_integer(unsigned(addr))+1) & mem(to_integer(unsigned(addr))+0);
+
+            -- read
         end if;
     end process;
+
+    PROCESS (PC_internal, PC_SET, JUMP_F)
+    BEGIN
+        PC_internal_next <= PC_internal + 1;
+        PC <= PC_internal & "00";
+        IF JUMP_F = '1' THEN
+            PC_internal_next <= PC_SET(31 downto 2); 
+        END IF;
+    END PROCESS;
     
 end Behavioral;

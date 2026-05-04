@@ -36,9 +36,8 @@ entity Program_counter is
             CLK_EN      : in STD_LOGIC;
             JUMP_F      : in STD_LOGIC;
             RST         : in STD_LOGIC;
-            PC_JUMP     : in SIGNED(31 downto 0);
-            PC          : out UNSIGNED(31 downto 0);
-            PC_NEXT     : out UNSIGNED(31 downto 0)
+            PC_SET      : in UNSIGNED(31 downto 0);
+            PC          : out UNSIGNED(31 downto 0)
         );
 end Program_counter;
 
@@ -51,22 +50,21 @@ begin
 
     PROCESS (CLK)
     BEGIN
-        IF RST = '0' THEN
-            PC_internal <= TO_UNSIGNED(0, 32);
-        ELSIF rising_edge(CLK) THEN
-            IF CLK_EN = '1' THEN
+        IF rising_edge(CLK) THEN
+            IF RST = '0' THEN
+                PC_internal <= TO_UNSIGNED(0, 32);
+            ELSIF CLK_EN = '1' THEN
                 PC_internal <= PC_internal_next;
             END IF;
         END IF;
     END PROCESS;
 
-    PROCESS (PC_internal, PC_JUMP, JUMP_F)
+    PROCESS (PC_internal, PC_SET, JUMP_F)
     BEGIN
         PC_internal_next <= PC_internal + 4;
-        PC_next <= PC_internal + 4;
         PC <= PC_internal;
         IF JUMP_F = '1' THEN
-            PC_internal_next <= unsigned( abs(signed(PC_internal) + PC_JUMP)); 
+            PC_internal_next <= PC_SET; 
         END IF;
     END PROCESS;
 

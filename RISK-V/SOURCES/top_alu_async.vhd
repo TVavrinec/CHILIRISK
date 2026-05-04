@@ -166,7 +166,6 @@ begin
 				elsif (i_load = '1') then
 
 					o_addr <= f_addition(i_din0, i_imm, '0');
-
 				else
 					    if    i_funct3 = "000" then
 							o_dout <= f_addition   (i_din0, i_imm, i_funct7(5));
@@ -191,9 +190,9 @@ begin
 			when "100" =>
 			
 				if (i_u_type = '1') then
-					o_dout <= f_left_shift(i_imm, std_logic_vector(to_unsigned(12, DATA_WIDTH)));
+					o_dout <=  i_imm;               --f_left_shift(i_imm, std_logic_vector(to_unsigned(12, DATA_WIDTH)));
 				else
-					o_dout <= f_addition(i_pc, f_left_shift(i_imm, std_logic_vector(to_unsigned(12, DATA_WIDTH))), '0');
+					o_dout <=  i_imm;               --f_addition(i_pc, f_left_shift(i_imm, std_logic_vector(to_unsigned(12, DATA_WIDTH))), '0');
 				end if;
 
 			-- Branch
@@ -255,6 +254,7 @@ begin
 			when "010" =>
 			
 				o_addr <= f_addition(i_din0, i_imm, '0');
+				o_dout <= i_din1;
 				
 			when others => null;
 			
