@@ -44,7 +44,7 @@ entity top_alu_async is
 		i_din1		: in	std_logic_vector(DATA_WIDTH-1 downto 0); -- data in 1
 		i_imm		: in	std_logic_vector(DATA_WIDTH-1 downto 0); -- immediate
 		i_pc		: in	std_logic_vector(DATA_WIDTH-1 downto 0); -- program counter
-		
+
 		o_dout		: out	std_logic_vector(DATA_WIDTH-1 downto 0);	 -- data out
 		o_pc		: out	std_logic_vector(DATA_WIDTH-1 downto 0);	 -- program counter
 		o_addr		: out	std_logic_vector(DATA_WIDTH-1 downto 0)
@@ -202,46 +202,46 @@ begin
 					if signed(i_din0) = signed(i_din1) then
 						o_pc <= f_addition(i_pc, i_imm, '0');
 					else
-						o_pc <= i_pc;
+						o_pc <= f_addition(i_pc, std_logic_vector(TO_UNSIGNED(4,32)), '0');
 					end if;
 
 				elsif i_funct3 = "001" then
 					if signed(i_din0) /= signed(i_din1) then
 						o_pc <= f_addition(i_pc, i_imm, '0');
 					else
-						o_pc <= i_pc;
+						o_pc <= f_addition(i_pc, std_logic_vector(TO_UNSIGNED(4,32)), '0');
 					end if;
 
 				elsif i_funct3 = "100" then
 					if signed(i_din0) < signed(i_din1) then
 						o_pc <= f_addition(i_pc, i_imm, '0');
 					else
-						o_pc <= i_pc;
+						o_pc <= f_addition(i_pc, std_logic_vector(TO_UNSIGNED(4,32)), '0');
 					end if;
 
 				elsif i_funct3 = "101" then
 					if signed(i_din0) >= signed(i_din1) then
 						o_pc <= f_addition(i_pc, i_imm, '0');
 					else
-						o_pc <= i_pc;
+						o_pc <= f_addition(i_pc, std_logic_vector(TO_UNSIGNED(4,32)), '0');
 					end if;
 
 				elsif i_funct3 = "110" then
 					if unsigned(i_din0) < unsigned(i_din1) then
 						o_pc <= f_addition(i_pc, i_imm, '0');
 					else
-						o_pc <= i_pc;
+						o_pc <= f_addition(i_pc, std_logic_vector(TO_UNSIGNED(4,32)), '0');
 					end if;
 
 				elsif i_funct3 = "111" then
 					if unsigned(i_din0) >= unsigned(i_din1) then
 						o_pc <= f_addition(i_pc, i_imm, '0');
 					else
-						o_pc <= i_pc;
+						o_pc <= f_addition(i_pc, std_logic_vector(TO_UNSIGNED(4,32)), '0');
 					end if;
 
 				else
-					o_pc <= i_pc;
+					o_pc <= f_addition(i_pc, std_logic_vector(TO_UNSIGNED(4,32)), '0');
 				end if;
 
 			-- Jump

@@ -220,7 +220,7 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
 
     ce_gen_inst : ce_gen
     generic map (
-            G_DIV_FACT => 2
+            G_DIV_FACT => 1
         )
     port map (
             CLK     => CLK,

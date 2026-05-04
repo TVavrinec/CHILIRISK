@@ -29,23 +29,23 @@ architecture Behavioral of Instruction_Cache is
     type mem_type is array (0 to 9215) of std_logic_vector(31 downto 0);
     signal mem : mem_type := (
 -- main (0x1CC)
-    115 => x"00A00713", -- addi -- rd(01110)(14)(0x0E) = rs1(0) + imm(10100000000)(1280)(0x500)
-    116 => x"02FAF7B7", -- lui  -- rd(01111)(15)(0x0F) = imm(0010111110101111000000000000)(49999872)(0x2FAF000)
+    115 => x"00A00713", -- addi -- rd(01110)(14)(0x0E) = rs1(0) + imm(000000001010)(10)(0x00A)
+    116 => x"000807B7", -- lui  -- rd(01111)(15)(0x0F) = imm(0010111110101111000000000000)(49999872)(0x2FAF000)
     117 => x"07F78793", -- addi -- rd(01111)(15)(0x0F) = rs1(01111)(15)(0x0F) + imm(01111111)(0x07F)
     118 => x"00000013", -- addi -- rd(00000)(00)(0x00) = rs1(0) + imm(0) 
-    119 => x"FFF78793", -- addi -- rd(01111)(15)(0x0F) = rs1(01111)(15)(0x0F) + imm(111111111111)(0xFFF)
-    120 => x"FE079CE3", -- bne  -- if(rs1(01111)(15)(0x0F) != rs2(0)) PC += imm(0100111111111)(0x9FF)
-    121 => x"FFF70713", -- addi -- rd(01110)(14)(0x0E) = rs1(01110)(14)(0x0E) + imm(111111111111)(0xFFF)
+    119 => x"FFF78793", -- addi -- rd(01111)(15)(0x0F) = rs1(01111)(15)(0x0F) + imm(111111111111)(-1)(0xFFF)
+    120 => x"FE079CE3", -- bne  -- if(rs1(01111)(15)(0x0F) != rs2(0)) PC += imm(1111111111000)(-8)(0x1FF8)
+    121 => x"FFF70713", -- addi -- rd(01110)(14)(0x0E) = rs1(01110)(14)(0x0E) + imm(111111111111)(-1)(0xFFF)
     122 => x"FE0714E3", -- bne  -- if(rs1(01110)(9)(0x09) != rs2(0)) PC += imm(111111110100)(0xFF4)
     123 => x"00008067", -- jalr -- rd(0) = PC+4; PC = rs1(1) + imm(0)
 -- delay_sec (0x1F0)
-    124 => x"02FAF7B7", -- lui  -- rd(01111)(15)(0x0F) = imm(0010111110101111000000000000)(49999872)(0x2FAF000)
+    124 => x"000807B7", -- lui  -- rd(01111)(15)(0x0F) = imm(0010111110101111000000000000)(49999872)(0x2FAF000)
     125 => x"07F78793", -- addi -- rd(01111)(15)(0x0F) = rs1(01111)(15)(0x0F) + imm(01111111)(0x07F)
     126 => x"00000013", -- addi -- rd(00000)(00)(0x00) = rs1(0) + imm(0) 
-    127 => x"FFF78793", -- addi -- rd(01111)(15)(0x0F) = rs1(01111)(15)(0x0F) + imm(111111111111)(0xFFF)
+    127 => x"FFF78793", -- addi -- rd(01111)(15)(0x0F) = rs1(01111)(15)(0x0F) + imm(111111111111)(-1)(0xFFF)
     128 => x"FE0796E3", -- bne  -- if(rs1(01111)(15)(0x0F) != rs2(0)) PC += imm(111111110110)(0xFF6)
     129 => x"00008067", -- jalr -- rd(0) = PC+4; PC = rs1(1) + imm(0)
-
+   
     others => (others => '0')
     );
         
@@ -68,11 +68,12 @@ begin
                 PC_internal <= TO_UNSIGNED(0, 30);
             ELSIF CLK_EN = '1' THEN
                 PC_internal <= PC_internal_next;
+                PC <= PC_internal_next & "00";
                 r_data <= mem(index);
             END IF;
 
             -- write
-            if w_en = '1' then
+            if w_en = '1' and CLK_EN = '1' then
                 mem(index) <= w_data;
             end if;
 
@@ -83,7 +84,6 @@ begin
     PROCESS (PC_internal, PC_SET, JUMP_F)
     BEGIN
         PC_internal_next <= PC_internal + 1;
-        PC <= PC_internal & "00";
         IF JUMP_F = '1' THEN
             PC_internal_next <= PC_SET(31 downto 2); 
         END IF;

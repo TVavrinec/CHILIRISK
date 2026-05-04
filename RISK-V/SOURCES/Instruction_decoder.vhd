@@ -185,7 +185,7 @@ begin
                 rs1 <= unsigned(instruct(19 downto 15));
                 rs2 <= unsigned(instruct(24 downto 20));
                 imm <= resize(signed(instruct(7) & instruct(30 downto 25) & instruct(11 downto 8) & '0'), imm'length);
-                jump_f <= '0';
+                jump_f <= '1';
                 reg_write_f <= '0';
                 mem_read_f <= '0';
                 mem_write_f <= '0';

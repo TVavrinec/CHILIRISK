@@ -67,7 +67,6 @@ begin
             PC_internal_next <= PC_SET; 
         END IF;
     END PROCESS;
-
-    
+  
 
 end Behavioral;
