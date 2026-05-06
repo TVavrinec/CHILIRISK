@@ -178,13 +178,13 @@ architecture Behavioral of RP_TOP is
            RW_Size   : in STD_LOGIC_VECTOR (1 downto 0);
            UnSi_flag : in STD_LOGIC;
 
-           pin_in       : in STD_LOGIC_VECTOR (15 downto 0);
-
+           pin_in    : in STD_LOGIC_VECTOR (15 downto 0);
 
            --OUTPUTS
            r_data   : out STD_LOGIC_VECTOR (31 downto 0);
            pin_out  : out STD_LOGIC_VECTOR (15 downto 0);
-           disp_out : out STD_LOGIC_VECTOR (15 downto 0));
+           disp_out : out STD_LOGIC_VECTOR (15 downto 0)
+        );
            
     END COMPONENT Data_memory;
 
@@ -371,10 +371,10 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
            --OUTPUTS
            r_data   => memory_data_out,
            pin_out  => led,
-           disp_out(03 downto 00) => w_dig_1,
-           disp_out(07 downto 04) => w_dig_2,
-           disp_out(11 downto 08) => w_dig_3,
-           disp_out(15 downto 12) => w_dig_4
+           disp_out(03 downto 00) => open, -- w_dig_1,
+           disp_out(07 downto 04) => open, -- w_dig_2,
+           disp_out(11 downto 08) => open, -- w_dig_3,
+           disp_out(15 downto 12) => open -- w_dig_4
         );
       
       
