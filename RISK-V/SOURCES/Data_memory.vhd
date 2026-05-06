@@ -51,10 +51,11 @@ begin
 
             word := mem(index);
 
-            pin_out <= mem(0)(31 downto 16);
-            mem(0)(15 downto 0) <= pin_in;
+            pin_out <= mem(mem'high)(31 downto 16);
+            mem(mem'high)(15 downto 0) <= pin_in;
 
-            pin_out <= mem(1)(15 downto 0);
+            disp_out <= mem(mem'high-1)(15 downto 0);
+            
             ------------------
             -- WRITE
             ------------------
