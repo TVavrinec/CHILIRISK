@@ -37,6 +37,7 @@ begin
 
     CLK_process : process
     begin
+        pin_in <= x"0000";
             while true loop
                 CLK <= '0';
                 wait for 10 ns;

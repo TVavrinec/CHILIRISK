@@ -1,3 +1,7 @@
 ﻿docu/KiCad_sch/KiCad_sch-backups
 docu/KiCad_sch/\#auto_saved_files\#
 docu/KiCad_sch/~KiCad_sch.kicad_sch.lck
+*.log
+*.jou
+.txt
+*.txt

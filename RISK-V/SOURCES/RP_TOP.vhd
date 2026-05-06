@@ -36,33 +36,33 @@ entity RP_TOP is
             CLK : IN STD_LOGIC;
             RST : IN STD_LOGIC;
 
-            pin_in : IN STD_LOGIC_VECTOR (15 downto 0);
+            sw : IN STD_LOGIC_VECTOR (15 downto 0);
 
-		    DISP_SEG    : out STD_LOGIC_VECTOR (7 DOWNTO 0);
-		    DISP_DIG    : out STD_LOGIC_VECTOR (3 DOWNTO 0);
-            pin_out     : out STD_LOGIC_VECTOR (15 downto 0)
+		    -- DISP_SEG    : out STD_LOGIC_VECTOR (7 DOWNTO 0);
+		    -- DISP_DIG    : out STD_LOGIC_VECTOR (3 DOWNTO 0);
+            led         : out STD_LOGIC_VECTOR (15 downto 0)
         );
 end RP_TOP;
 
 architecture Behavioral of RP_TOP is
 
-    component top_7seg_driver is
-        generic(
-            GCLK_FREQ	: positive  := 100e6;
-            ANODE_FREQ	: positive  := 100;
-            DOT_POINT	: std_logic := '1'
-        );
-        port(
-            i_gclk		: in	std_logic;
-            i_dig_1		: in	std_logic_vector(3 downto 0);
-            i_dig_2		: in	std_logic_vector(3 downto 0);
-            i_dig_3		: in	std_logic_vector(3 downto 0);
-            i_dig_4		: in	std_logic_vector(3 downto 0);
+    -- component top_7seg_driver is
+    --     generic(
+    --         GCLK_FREQ	: positive  := 100e6;
+    --         ANODE_FREQ	: positive  := 100;
+    --         DOT_POINT	: std_logic := '1'
+    --     );
+    --     port(
+    --         i_gclk		: in	std_logic;
+    --         i_dig_1		: in	std_logic_vector(3 downto 0);
+    --         i_dig_2		: in	std_logic_vector(3 downto 0);
+    --         i_dig_3		: in	std_logic_vector(3 downto 0);
+    --         i_dig_4		: in	std_logic_vector(3 downto 0);
 
-            o_segments	: out	std_logic_vector(7 downto 0);
-            o_anode		: out	std_logic_vector(3 downto 0)
-        );
-    end component top_7seg_driver;
+    --         o_segments	: out	std_logic_vector(7 downto 0);
+    --         o_anode		: out	std_logic_vector(3 downto 0)
+    --     );
+    -- end component top_7seg_driver;
 
     COMPONENT ce_gen
     GENERIC (
@@ -249,21 +249,21 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
   -- clk_in1 => CLK
  --);
 
-    seg_disp_driver_inst : top_7seg_driver
-    generic map(
-		GCLK_FREQ	=> 100e6,
-		ANODE_FREQ	=> 100,
-		DOT_POINT	=> '1'
-	)
-	port map(
-		i_gclk		=> CLK,
-		i_dig_1		=> w_dig_1,
-		i_dig_2		=> w_dig_2,
-		i_dig_3		=> w_dig_3,
-		i_dig_4		=> w_dig_4,
-		o_segments	=> DISP_SEG,
-		o_anode		=> DISP_DIG 
-	);
+    -- seg_disp_driver_inst : top_7seg_driver
+    -- generic map(
+	-- 	GCLK_FREQ	=> 100e6,
+	-- 	ANODE_FREQ	=> 100,
+	-- 	DOT_POINT	=> '1'
+	-- )
+	-- port map(
+	-- 	i_gclk		=> CLK,
+	-- 	i_dig_1		=> w_dig_1,
+	-- 	i_dig_2		=> w_dig_2,
+	-- 	i_dig_3		=> w_dig_3,
+	-- 	i_dig_4		=> w_dig_4,
+	-- 	o_segments	=> DISP_SEG,
+	-- 	o_anode		=> DISP_DIG 
+	-- );
     
 
 
@@ -366,11 +366,11 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
            RW_Size   => bite_cound_memory,
            UnSi_flag => bite_type_memory,
            
-           pin_in    => pin_in,
+           pin_in    => sw,
            
            --OUTPUTS
            r_data   => memory_data_out,
-           pin_out  => pin_out,
+           pin_out  => led,
            disp_out(03 downto 00) => w_dig_1,
            disp_out(07 downto 04) => w_dig_2,
            disp_out(11 downto 08) => w_dig_3,
