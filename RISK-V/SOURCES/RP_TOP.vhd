@@ -38,12 +38,31 @@ entity RP_TOP is
 
             pin_in : IN STD_LOGIC_VECTOR (15 downto 0);
 
-            --OUTPUTS
-            pin_out : out STD_LOGIC_VECTOR (15 downto 0)
+		    DISP_SEG    : out STD_LOGIC_VECTOR (7 DOWNTO 0);
+		    DISP_DIG    : out STD_LOGIC_VECTOR (3 DOWNTO 0);
+            pin_out     : out STD_LOGIC_VECTOR (15 downto 0)
         );
 end RP_TOP;
 
 architecture Behavioral of RP_TOP is
+
+    component top_7seg_driver is
+        generic(
+            GCLK_FREQ	: positive  := 100e6;
+            ANODE_FREQ	: positive  := 100;
+            DOT_POINT	: std_logic := '1'
+        );
+        port(
+            i_gclk		: in	std_logic;
+            i_dig_1		: in	std_logic_vector(3 downto 0);
+            i_dig_2		: in	std_logic_vector(3 downto 0);
+            i_dig_3		: in	std_logic_vector(3 downto 0);
+            i_dig_4		: in	std_logic_vector(3 downto 0);
+
+            o_segments	: out	std_logic_vector(7 downto 0);
+            o_anode		: out	std_logic_vector(3 downto 0)
+        );
+    end component top_7seg_driver;
 
     COMPONENT ce_gen
     GENERIC (
@@ -168,6 +187,12 @@ architecture Behavioral of RP_TOP is
            
     END COMPONENT Data_memory;
 
+    -- signals for the 7seg display
+	SIGNAL w_dig_1	: STD_LOGIC_VECTOR (3 DOWNTO 0);
+	SIGNAL w_dig_2	: STD_LOGIC_VECTOR (3 DOWNTO 0);
+	SIGNAL w_dig_3	: STD_LOGIC_VECTOR (3 DOWNTO 0);
+	SIGNAL w_dig_4	: STD_LOGIC_VECTOR (3 DOWNTO 0);
+
     SIGNAL CLK_B : STD_LOGIC := '1';
     SIGNAL clk_sig: STD_LOGIC;
 
@@ -222,6 +247,24 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
   -- clk_out1 => clk_sig,  SIMULACE VYPNOUT
   -- clk_in1 => CLK
  --);
+
+    seg_disp_driver_inst : top_7seg_driver
+    generic map(
+		GCLK_FREQ	=> 100e6,
+		ANODE_FREQ	=> 100,
+		DOT_POINT	=> '1'
+	)
+	port map(
+		i_gclk		=> CLK,
+		i_dig_1		=> w_dig_1,
+		i_dig_2		=> w_dig_2,
+		i_dig_3		=> w_dig_3,
+		i_dig_4		=> w_dig_4,
+		o_segments	=> DISP_SEG,
+		o_anode		=> DISP_DIG 
+	);
+    
+
 
     ce_gen_inst : ce_gen
     generic map (
