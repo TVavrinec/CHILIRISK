@@ -18,8 +18,11 @@ entity Data_memory is
            pin_in       : in STD_LOGIC_VECTOR (15 downto 0);
 
            --OUTPUTS
-           r_data  : out STD_LOGIC_VECTOR (31 downto 0);
-           pin_out : out STD_LOGIC_VECTOR (15 downto 0));
+           r_data   : out STD_LOGIC_VECTOR (31 downto 0);
+
+           pin_out  : out STD_LOGIC_VECTOR (15 downto 0);
+           disp_out : out STD_LOGIC_VECTOR (15 downto 0)
+        );
            
 end Data_memory;
 
@@ -50,6 +53,8 @@ begin
 
             pin_out <= mem(0)(31 downto 16);
             mem(0)(15 downto 0) <= pin_in;
+
+            pin_out <= mem(1)(15 downto 0);
             ------------------
             -- WRITE
             ------------------
