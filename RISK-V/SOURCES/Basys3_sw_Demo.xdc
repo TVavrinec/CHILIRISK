@@ -80,7 +80,7 @@ set_property PACKAGE_PIN U17 [get_ports {btn[3]}]
 set_property PACKAGE_PIN U18 [get_ports {btn[4]}]					
 	set_property IOSTANDARD LVCMOS33 [get_ports {btn[4]}]
 
-## Buttons
+## 7segment display
 set_property PACKAGE_PIN W7 [get_ports {DISP_SEG[0]}]					
 	set_property IOSTANDARD LVCMOS33 [get_ports {DISP_SEG[0]}]
 set_property PACKAGE_PIN W6 [get_ports {DISP_SEG[1]}]					
