@@ -182,8 +182,9 @@ architecture Behavioral of RP_TOP is
 
 
            --OUTPUTS
-           r_data : out STD_LOGIC_VECTOR (31 downto 0);
-           pin_out : out STD_LOGIC_VECTOR (15 downto 0));
+           r_data   : out STD_LOGIC_VECTOR (31 downto 0);
+           pin_out  : out STD_LOGIC_VECTOR (15 downto 0);
+           disp_out : out STD_LOGIC_VECTOR (15 downto 0));
            
     END COMPONENT Data_memory;
 
@@ -368,8 +369,12 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
            pin_in    => pin_in,
            
            --OUTPUTS
-           r_data => memory_data_out,
-           pin_out => pin_out
+           r_data   => memory_data_out,
+           pin_out  => pin_out,
+           disp_out(03 downto 00) => w_dig_1,
+           disp_out(07 downto 04) => w_dig_2,
+           disp_out(11 downto 08) => w_dig_3,
+           disp_out(15 downto 12) => w_dig_4
         );
       
       
