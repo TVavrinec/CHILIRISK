@@ -265,7 +265,7 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
 		DOT_POINT	=> '1'
 	)
 	port map(
-		i_gclk		=> CLK,
+		i_gclk		=> clk_sig,
 		i_dig_1		=> w_dig_1,
 		i_dig_2		=> w_dig_2,
 		i_dig_3		=> w_dig_3,
@@ -273,7 +273,7 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
 		o_segments	=> DISP_SEG,
 		o_anode		=> DISP_DIG 
 	);
-
+    
     ce_gen_inst : ce_gen
     generic map (
             G_DIV_FACT => 1
@@ -384,8 +384,9 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
            disp_out(11 downto 08) => w_dig_3,
            disp_out(15 downto 12) => w_dig_4
         );
-
     -- led <= "1111111100000000";
+    -- led(0) <= '0';
+      
     -- w_dig_1 <= "0000";
     -- w_dig_2 <= "0001";
     -- w_dig_3 <= "0100";
