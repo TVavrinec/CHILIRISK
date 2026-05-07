@@ -40,7 +40,7 @@ entity RP_TOP is
 
 		    -- DISP_SEG    : out STD_LOGIC_VECTOR (7 DOWNTO 0);
 		    -- DISP_DIG    : out STD_LOGIC_VECTOR (3 DOWNTO 0);
-            led         : out STD_LOGIC_VECTOR (15 downto 0)
+            led : out STD_LOGIC_VECTOR (15 downto 0)
         );
 end RP_TOP;
 
@@ -115,11 +115,15 @@ architecture Behavioral of RP_TOP is
         );
     END COMPONENT Reg_file;
        
-    component CLK_GEN_5MHZ
-    port(
-            clk_out1          : out    std_logic;
-            clk_in1           : in     std_logic
-    );
+    component clk_wiz_0
+    port(-- Clock in ports
+        -- Clock out ports
+        clk_out1          : out    std_logic;
+        -- Status and control signals
+        reset             : in     std_logic;
+        locked            : out    std_logic;
+        clk_in1           : in     std_logic
+        );
     end component;
     
     
@@ -242,13 +246,16 @@ architecture Behavioral of RP_TOP is
 
 begin ------------------------------------ Behavioral description of RP_TOP ------------------------------------ 
 
-
---CLK_GEN_5MHZ_COMP : CLK_GEN_5MHZ
-  -- port map ( 
-  -- clk_out1 => clk_sig,  SIMULACE VYPNOUT
-  -- clk_in1 => CLK
- --);
-
+    CLK_GEN_50MHZ_COMP : clk_wiz_0
+    port map ( 
+        -- Clock out ports  
+        clk_out1 => clk_sig,
+        -- Status and control signals                
+        reset => '1',
+        locked => open,
+        -- Clock in ports
+        clk_in1 => CLK
+    );
     -- seg_disp_driver_inst : top_7seg_driver
     -- generic map(
 	-- 	GCLK_FREQ	=> 100e6,
@@ -272,7 +279,7 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
             G_DIV_FACT => 1
         )
     port map (
-            CLK     => CLK,
+            CLK     => clk_sig,
             CE      => '1',
             SRST    => '0',
             CE_O    => CLK_B 
@@ -388,6 +395,6 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
         end if;
     end process;
     
-    clk_sig <= CLK; --CLK pro simulaci
+    -- clk_sig <= CLK; --CLK pro simulaci
 
 end Behavioral;

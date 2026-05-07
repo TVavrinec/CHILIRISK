@@ -39,7 +39,7 @@ architecture Behavioral of Data_memory is
     );
     END COMPONENT; 
 
-    type t_vector is array (0 to 8) of STD_LOGIC_VECTOR(31 downto 0);
+    type t_vector is array (0 to 7) of STD_LOGIC_VECTOR(31 downto 0);
 
     SIGNAL out_regs : t_vector := ( others => (others => '0'));
 
@@ -205,7 +205,7 @@ begin
 
         pin_out <= out_regs(0)(15 downto 0);
         disp_out <= out_regs(1)(15 downto 0);
-        out_regs(3)(15 downto 0) <= pin_in;
+        out_regs(4)(15 downto 0) <= pin_in;
     end process;
     
 end Behavioral;
