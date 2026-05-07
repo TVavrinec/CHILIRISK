@@ -28,44 +28,47 @@ architecture Behavioral of Instruction_Cache is
     --INSTRUCTION MEMORY IS 36863*8bits --> 36,864 kBytes 
     type mem_type is array (0 to 9215) of std_logic_vector(31 downto 0);
     signal mem : mem_type := (
-    -- 00000000 <delay>:
-    0 => x"00A00793",
-    1 => x"00000013",
-    2 => x"00000013",
-    3 => x"00000013",
-    4 => x"FFF78793",
-    5 => x"FE0798E3",
-    6 => x"00008067",
-    -- 
-    -- 0000001c <main>:
-     7 => x"10000637",
-     8 => x"100006B7",
-     9 => x"10000537",
-    10 => x"FFF00593",
-    11 => x"00460613",
-    12 => x"00168693",
-    13 => x"00B50023",
-    14 => x"00064703",
-    15 => x"00A00793",
-    16 => x"0FF77713",
-    17 => x"00E68023",
-    18 => x"00000013",
-    19 => x"00000013",
-    20 => x"00000013",
-    21 => x"FFF78793",
-    22 => x"FE0798E3",
-    23 => x"FD9FF06F",
-    -- 
-    -- Disassembly of section .init:
-    -- 
-    -- 00000060 <_start>:
-    24 => x"00000013",
-    25 => x"00001197",
-    26 => x"84418193",
-    27 => x"FFF00113",
-    28 => x"00010433",
-    29 => x"FA9FF0EF",
-    30 => x"00000073",
+-- 00000000 <_start>:
+0 => x"00000013",
+1 => x"00001197",
+2 => x"8B818193",
+3 => x"FFF00113",
+4 => x"00010433",
+5 => x"024000EF",
+6 => x"00000073",
+-- 
+-- 0000001c <delay>:
+7 => x"00A00793",
+8 => x"00000013",
+9 => x"00000013",
+10 => x"00000013",
+11 => x"FFF78793",
+12 => x"FE0798E3",
+13 => x"00008067",
+-- 
+-- 00000038 <main>:
+14 => x"800005B7",
+15 => x"80000637",
+16 => x"00010737",
+17 => x"FFF70713",
+18 => x"80000537",
+19 => x"00458593",
+20 => x"00160613",
+21 => x"0FF77793",
+22 => x"00F50023",
+23 => x"0005C683",
+24 => x"00A00793",
+25 => x"0FF6F693",
+26 => x"00D60023",
+27 => x"00000013",
+28 => x"00000013",
+29 => x"00000013",
+30 => x"FFF78793",
+31 => x"FE0798E3",
+32 => x"FFF70713",
+33 => x"FC0718E3",
+34 => x"00F00713",
+35 => x"FC9FF06F",
 
     -- 114 => x"00A00713", -- addi -- rd(01110)(14)(0x0E) = rs1(0) + imm(000000001010)(10)(0x00A)
     -- 115 => x"002007B7", -- lui  -- rd(01111)(15)(0x0F) = imm()(0x2000)()
@@ -93,8 +96,8 @@ architecture Behavioral of Instruction_Cache is
     attribute ram_style : string;
     attribute ram_style of mem : signal is "block";
 
-    SIGNAL PC_internal : UNSIGNED(29 downto 0)  := (others => '0');
-    SIGNAL PC_internal_next : UNSIGNED(29 downto 0) := (others => '0');
+    SIGNAL PC_internal : SIGNED(30 downto 0)  := (others => '1');
+    SIGNAL PC_internal_next : SIGNED(30 downto 0) := (others => '1');
     
 begin
 
@@ -102,13 +105,13 @@ begin
         variable index : integer;
     begin
         if rising_edge(CLK) then
-            index := to_integer(unsigned(PC_internal_next));
+            index := to_integer(signed(PC_internal_next));
 
             IF PC_RST = '0' THEN
-                PC_internal <= TO_UNSIGNED(0, 30);
+                PC_internal <= TO_SIGNED(0, 31);
             ELSIF CLK_EN = '1' THEN
                 PC_internal <= PC_internal_next;
-                PC <= PC_internal_next & "00";
+                PC <= UNSIGNED(PC_internal_next(29 downto 0)) & "00";
                 r_data <= mem(index);
             END IF;
 
@@ -125,7 +128,7 @@ begin
     BEGIN
         PC_internal_next <= PC_internal + 1;
         IF JUMP_F = '1' THEN
-            PC_internal_next <= PC_SET(31 downto 2); 
+            PC_internal_next <= SIGNED('0' & PC_SET(31 downto 2)); 
         END IF;
     END PROCESS;
     

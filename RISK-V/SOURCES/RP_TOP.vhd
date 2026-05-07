@@ -246,17 +246,17 @@ architecture Behavioral of RP_TOP is
 
 begin ------------------------------------ Behavioral description of RP_TOP ------------------------------------ 
 
-    -- CLK_GEN_50MHZ_COMP : clk_wiz_0
-    -- port map ( 
-    --     -- Clock out ports  
-    --     clk_out1 => clk_sig,
-    --     -- Status and control signals                
-    --     reset => '1',
-    --     locked => open,
-    --     -- Clock in ports
-    --     clk_in1 => CLK
-    -- );
-
+    CLK_GEN_50MHZ_COMP : clk_wiz_0
+    port map ( 
+        -- Clock out ports  
+        clk_out1 => clk_sig,
+        -- Status and control signals                
+        reset => '1',
+        locked => open,
+        -- Clock in ports
+        clk_in1 => CLK
+    );
+    -- clk_sig <= CLK; --CLK pro simulaci
 
     seg_disp_driver_inst : top_7seg_driver
     generic map(
@@ -396,7 +396,5 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
             NCS_rd_value <= signed(rd_value);
         end if;
     end process;
-    
-    clk_sig <= CLK; --CLK pro simulaci
 
 end Behavioral;
