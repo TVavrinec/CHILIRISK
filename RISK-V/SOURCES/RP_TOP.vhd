@@ -260,8 +260,8 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
 
     seg_disp_driver_inst : top_7seg_driver
     generic map(
-		GCLK_FREQ	=> 100e6,
-		ANODE_FREQ	=> 100,
+		GCLK_FREQ	=> 50e6,
+		ANODE_FREQ	=> 400,
 		DOT_POINT	=> '1'
 	)
 	port map(
@@ -273,19 +273,6 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
 		o_segments	=> DISP_SEG,
 		o_anode		=> DISP_DIG 
 	);
-    
-
-
-    ce_gen_inst : ce_gen
-    generic map (
-            G_DIV_FACT => 1
-        )
-    port map (
-            CLK     => clk_sig,
-            CE      => '1',
-            SRST    => '0',
-            CE_O    => CLK_B 
-        );
 
     top_alu_async_inst : top_alu_async
 	generic map(
@@ -380,14 +367,18 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
            --OUTPUTS
            r_data   => memory_data_out,
            pin_out  => led, -- open, --
+        --    disp_out => open
            disp_out(03 downto 00) => w_dig_1,
            disp_out(07 downto 04) => w_dig_2,
            disp_out(11 downto 08) => w_dig_3,
            disp_out(15 downto 12) => w_dig_4
         );
+
     -- led <= "1111111100000000";
-    -- led(0) <= '0';
-      
+    -- w_dig_1 <= "0000";
+    -- w_dig_2 <= "0001";
+    -- w_dig_3 <= "0100";
+    -- w_dig_4 <= "1111";
 
     process (rd_value, mem_read_f, memory_data_out) is
     begin
