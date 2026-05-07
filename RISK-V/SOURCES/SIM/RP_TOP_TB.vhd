@@ -11,33 +11,42 @@ architecture Behavioral of RP_TOP_TB is
 
 COMPONENT RP_TOP
     PORT(
-                CLK : IN STD_LOGIC;
-                RST : IN STD_LOGIC;
-        
-                pin_in : IN STD_LOGIC_VECTOR (15 downto 0);
 
-                --OUTPUTS
-                pin_out : out STD_LOGIC_VECTOR (15 downto 0)
+        CLK : IN STD_LOGIC;
+        RST : IN STD_LOGIC;
+        
+        sw : IN STD_LOGIC_VECTOR (15 downto 0);
+        
+        --OUTPUTS
+
+        DISP_SEG    : out STD_LOGIC_VECTOR (7 DOWNTO 0);
+        DISP_DIG    : out STD_LOGIC_VECTOR (3 DOWNTO 0);
+        led     : out STD_LOGIC_VECTOR (15 downto 0)
         );
     end component;
 
     signal CLK : STD_LOGIC;
     signal RST : STD_LOGIC := '1';
-    signal pin_in : STD_LOGIC_VECTOR (15 downto 0);
-    signal pin_out : STD_LOGIC_VECTOR (15 downto 0);
+    signal sw : STD_LOGIC_VECTOR (15 downto 0);
+
+    signal led : STD_LOGIC_VECTOR (15 downto 0);
+    signal DISP_SEG : STD_LOGIC_VECTOR (7 DOWNTO 0);
+    signal DISP_DIG : STD_LOGIC_VECTOR (3 DOWNTO 0);
 begin
 
     dut : RP_TOP
         PORT MAP(
             CLK => CLK,
             RST => RST,
-            pin_in => pin_in,
-            pin_out => pin_out
+            sw => sw,
+            led => led,
+            DISP_SEG => DISP_SEG,
+            DISP_DIG => DISP_DIG
         );
 
     CLK_process : process
     begin
-        pin_in <= x"0000";
+        sw <= x"0000";
             while true loop
                 CLK <= '0';
                 wait for 10 ns;

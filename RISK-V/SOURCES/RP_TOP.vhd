@@ -38,31 +38,31 @@ entity RP_TOP is
 
             sw : IN STD_LOGIC_VECTOR (15 downto 0);
 
-		    -- DISP_SEG    : out STD_LOGIC_VECTOR (7 DOWNTO 0);
-		    -- DISP_DIG    : out STD_LOGIC_VECTOR (3 DOWNTO 0);
+		    DISP_SEG    : out STD_LOGIC_VECTOR (7 DOWNTO 0);
+		    DISP_DIG    : out STD_LOGIC_VECTOR (3 DOWNTO 0);
             led : out STD_LOGIC_VECTOR (15 downto 0)
         );
 end RP_TOP;
 
 architecture Behavioral of RP_TOP is
 
-    -- component top_7seg_driver is
-    --     generic(
-    --         GCLK_FREQ	: positive  := 100e6;
-    --         ANODE_FREQ	: positive  := 100;
-    --         DOT_POINT	: std_logic := '1'
-    --     );
-    --     port(
-    --         i_gclk		: in	std_logic;
-    --         i_dig_1		: in	std_logic_vector(3 downto 0);
-    --         i_dig_2		: in	std_logic_vector(3 downto 0);
-    --         i_dig_3		: in	std_logic_vector(3 downto 0);
-    --         i_dig_4		: in	std_logic_vector(3 downto 0);
+    component top_7seg_driver is
+        generic(
+            GCLK_FREQ	: positive  := 100e6;
+            ANODE_FREQ	: positive  := 100;
+            DOT_POINT	: std_logic := '1'
+        );
+        port(
+            i_gclk		: in	std_logic;
+            i_dig_1		: in	std_logic_vector(3 downto 0);
+            i_dig_2		: in	std_logic_vector(3 downto 0);
+            i_dig_3		: in	std_logic_vector(3 downto 0);
+            i_dig_4		: in	std_logic_vector(3 downto 0);
 
-    --         o_segments	: out	std_logic_vector(7 downto 0);
-    --         o_anode		: out	std_logic_vector(3 downto 0)
-    --     );
-    -- end component top_7seg_driver;
+            o_segments	: out	std_logic_vector(7 downto 0);
+            o_anode		: out	std_logic_vector(3 downto 0)
+        );
+    end component top_7seg_driver;
 
     COMPONENT ce_gen
     GENERIC (
@@ -246,31 +246,33 @@ architecture Behavioral of RP_TOP is
 
 begin ------------------------------------ Behavioral description of RP_TOP ------------------------------------ 
 
-    CLK_GEN_50MHZ_COMP : clk_wiz_0
-    port map ( 
-        -- Clock out ports  
-        clk_out1 => clk_sig,
-        -- Status and control signals                
-        reset => '1',
-        locked => open,
-        -- Clock in ports
-        clk_in1 => CLK
-    );
-    -- seg_disp_driver_inst : top_7seg_driver
-    -- generic map(
-	-- 	GCLK_FREQ	=> 100e6,
-	-- 	ANODE_FREQ	=> 100,
-	-- 	DOT_POINT	=> '1'
-	-- )
-	-- port map(
-	-- 	i_gclk		=> CLK,
-	-- 	i_dig_1		=> w_dig_1,
-	-- 	i_dig_2		=> w_dig_2,
-	-- 	i_dig_3		=> w_dig_3,
-	-- 	i_dig_4		=> w_dig_4,
-	-- 	o_segments	=> DISP_SEG,
-	-- 	o_anode		=> DISP_DIG 
-	-- );
+    -- CLK_GEN_50MHZ_COMP : clk_wiz_0
+    -- port map ( 
+    --     -- Clock out ports  
+    --     clk_out1 => clk_sig,
+    --     -- Status and control signals                
+    --     reset => '1',
+    --     locked => open,
+    --     -- Clock in ports
+    --     clk_in1 => CLK
+    -- );
+
+
+    seg_disp_driver_inst : top_7seg_driver
+    generic map(
+		GCLK_FREQ	=> 100e6,
+		ANODE_FREQ	=> 100,
+		DOT_POINT	=> '1'
+	)
+	port map(
+		i_gclk		=> CLK,
+		i_dig_1		=> w_dig_1,
+		i_dig_2		=> w_dig_2,
+		i_dig_3		=> w_dig_3,
+		i_dig_4		=> w_dig_4,
+		o_segments	=> DISP_SEG,
+		o_anode		=> DISP_DIG 
+	);
     
 
 
@@ -378,10 +380,10 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
            --OUTPUTS
            r_data   => memory_data_out,
            pin_out  => led,
-           disp_out(03 downto 00) => open, -- w_dig_1,
-           disp_out(07 downto 04) => open, -- w_dig_2,
-           disp_out(11 downto 08) => open, -- w_dig_3,
-           disp_out(15 downto 12) => open -- w_dig_4
+           disp_out(03 downto 00) => w_dig_1,
+           disp_out(07 downto 04) => w_dig_2,
+           disp_out(11 downto 08) => w_dig_3,
+           disp_out(15 downto 12) => w_dig_4
         );
       
       
@@ -395,6 +397,6 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
         end if;
     end process;
     
-    -- clk_sig <= CLK; --CLK pro simulaci
+    clk_sig <= CLK; --CLK pro simulaci
 
 end Behavioral;
