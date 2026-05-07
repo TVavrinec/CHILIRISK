@@ -274,6 +274,17 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
 		o_anode		=> DISP_DIG 
 	);
 
+    ce_gen_inst : ce_gen
+    generic map (
+            G_DIV_FACT => 1
+        )
+    port map (
+            CLK     => clk_sig,
+            CE      => '1',
+            SRST    => '0',
+            CE_O    => CLK_B 
+        );
+
     top_alu_async_inst : top_alu_async
 	generic map(
             DATA_WIDTH	=> 32
