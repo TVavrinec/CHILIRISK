@@ -379,13 +379,14 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
            
            --OUTPUTS
            r_data   => memory_data_out,
-           pin_out  => led,
+           pin_out  => led, -- open, --
            disp_out(03 downto 00) => w_dig_1,
            disp_out(07 downto 04) => w_dig_2,
            disp_out(11 downto 08) => w_dig_3,
            disp_out(15 downto 12) => w_dig_4
         );
-      
+    -- led <= "1111111100000000";
+    -- led(0) <= '0';
       
 
     process (rd_value, mem_read_f, memory_data_out) is
