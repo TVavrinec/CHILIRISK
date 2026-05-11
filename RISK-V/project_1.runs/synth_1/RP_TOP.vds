@@ -1,0 +1,371 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Thu May  7 17:05:00 2026
+# Process ID         : 62440
+# Current directory  : C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.runs/synth_1
+# Command line       : vivado.exe -log RP_TOP.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source RP_TOP.tcl
+# Log file           : C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.runs/synth_1/RP_TOP.vds
+# Journal file       : C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.runs/synth_1\vivado.jou
+# Running On         : MTar-L16-W1
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26100
+# Processor Detail   : AMD Ryzen 7 7840HS with Radeon 780M Graphics
+# CPU Frequency      : 3793 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 29855 MB
+# Swap memory        : 47244 MB
+# Total Virtual      : 77100 MB
+# Available Virtual  : 17167 MB
+#-----------------------------------------------------------
+source RP_TOP.tcl -notrace
+create_project: Time (s): cpu = 00:00:08 ; elapsed = 00:00:06 . Memory (MB): peak = 537.598 ; gain = 220.719
+Command: read_checkpoint -auto_incremental -incremental C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.srcs/utils_1/imports/synth_1/RP_TOP.dcp
+INFO: [Vivado 12-5825] Read reference checkpoint from C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.srcs/utils_1/imports/synth_1/RP_TOP.dcp for incremental synthesis
+INFO: [Vivado 12-7989] Please ensure there are no constraint changes
+Command: synth_design -top RP_TOP -part xc7a35tcpg236-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35t'
+INFO: [Device 21-403] Loading part xc7a35tcpg236-1
+INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
+INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 90236
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 1283.102 ; gain = 540.762
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'RP_TOP' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/RP_TOP.vhd:47]
+	Parameter G_DIV_FACT bound to: 2 - type: integer 
+INFO: [Synth 8-3491] module 'ce_gen' declared at 'C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/ce_gen.vhd:6' bound to instance 'ce_gen_inst' of component 'ce_gen' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/RP_TOP.vhd:261]
+INFO: [Synth 8-638] synthesizing module 'ce_gen' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/ce_gen.vhd:18]
+	Parameter G_DIV_FACT bound to: 2 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'ce_gen' (0#1) [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/ce_gen.vhd:18]
+	Parameter GCLK_FREQ bound to: 50000000 - type: integer 
+	Parameter ANODE_FREQ bound to: 400 - type: integer 
+	Parameter DOT_POINT bound to: 1'b1 
+INFO: [Synth 8-3491] module 'top_7seg_driver' declared at 'C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/top_7seg_driver.vhd:32' bound to instance 'seg_disp_driver_inst' of component 'top_7seg_driver' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/RP_TOP.vhd:272]
+INFO: [Synth 8-638] synthesizing module 'top_7seg_driver' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/top_7seg_driver.vhd:50]
+	Parameter GCLK_FREQ bound to: 50000000 - type: integer 
+	Parameter ANODE_FREQ bound to: 400 - type: integer 
+	Parameter DOT_POINT bound to: 1'b1 
+INFO: [Synth 8-226] default block is never used [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/top_7seg_driver.vhd:76]
+INFO: [Synth 8-256] done synthesizing module 'top_7seg_driver' (0#1) [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/top_7seg_driver.vhd:50]
+	Parameter DATA_WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-3491] module 'top_alu_async' declared at 'C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/top_alu_async.vhd:31' bound to instance 'top_alu_async_inst' of component 'top_alu_async' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/RP_TOP.vhd:288]
+INFO: [Synth 8-638] synthesizing module 'top_alu_async' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/top_alu_async.vhd:54]
+	Parameter DATA_WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'top_alu_async' (0#1) [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/top_alu_async.vhd:54]
+INFO: [Synth 8-3491] module 'Reg_file' declared at 'C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Reg_file.vhd:9' bound to instance 'Reg_file_inst' of component 'Reg_file' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/RP_TOP.vhd:310]
+INFO: [Synth 8-638] synthesizing module 'Reg_file' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Reg_file.vhd:24]
+INFO: [Synth 8-256] done synthesizing module 'Reg_file' (0#1) [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Reg_file.vhd:24]
+INFO: [Synth 8-3491] module 'Instruction_decoder' declared at 'C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Instruction_decoder.vhd:34' bound to instance 'Instruction_decoder_inst' of component 'Instruction_decoder' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/RP_TOP.vhd:324]
+INFO: [Synth 8-638] synthesizing module 'Instruction_decoder' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Instruction_decoder.vhd:59]
+INFO: [Synth 8-256] done synthesizing module 'Instruction_decoder' (0#1) [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Instruction_decoder.vhd:59]
+INFO: [Synth 8-3491] module 'Instruction_Cache' declared at 'C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Instruction_Cache.vhd:5' bound to instance 'Instruction_Cache_inst' of component 'Instruction_Cache' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/RP_TOP.vhd:347]
+INFO: [Synth 8-638] synthesizing module 'Instruction_Cache' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Instruction_Cache.vhd:25]
+INFO: [Synth 8-256] done synthesizing module 'Instruction_Cache' (0#1) [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Instruction_Cache.vhd:25]
+INFO: [Synth 8-3491] module 'Data_memory' declared at 'C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Data_memory.vhd:7' bound to instance 'Data_memory_inst' of component 'Data_memory' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/RP_TOP.vhd:365]
+INFO: [Synth 8-638] synthesizing module 'Data_memory' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Data_memory.vhd:29]
+INFO: [Synth 8-3491] module 'blk_mem_gen_0' declared at 'C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.runs/synth_1/.Xil/Vivado-62440-MTar-L16-W1/realtime/blk_mem_gen_0_stub.vhdl:6' bound to instance 'blk_mem_gen_0_A' of component 'blk_mem_gen_0' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Data_memory.vhd:54]
+INFO: [Synth 8-638] synthesizing module 'blk_mem_gen_0' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.runs/synth_1/.Xil/Vivado-62440-MTar-L16-W1/realtime/blk_mem_gen_0_stub.vhdl:24]
+INFO: [Synth 8-3491] module 'blk_mem_gen_0' declared at 'C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.runs/synth_1/.Xil/Vivado-62440-MTar-L16-W1/realtime/blk_mem_gen_0_stub.vhdl:6' bound to instance 'blk_mem_gen_0_B' of component 'blk_mem_gen_0' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Data_memory.vhd:64]
+INFO: [Synth 8-3491] module 'blk_mem_gen_0' declared at 'C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.runs/synth_1/.Xil/Vivado-62440-MTar-L16-W1/realtime/blk_mem_gen_0_stub.vhdl:6' bound to instance 'blk_mem_gen_0_C' of component 'blk_mem_gen_0' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Data_memory.vhd:74]
+INFO: [Synth 8-3491] module 'blk_mem_gen_0' declared at 'C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.runs/synth_1/.Xil/Vivado-62440-MTar-L16-W1/realtime/blk_mem_gen_0_stub.vhdl:6' bound to instance 'blk_mem_gen_0_D' of component 'blk_mem_gen_0' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Data_memory.vhd:84]
+INFO: [Synth 8-256] done synthesizing module 'Data_memory' (0#1) [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Data_memory.vhd:29]
+INFO: [Synth 8-256] done synthesizing module 'RP_TOP' (0#1) [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/RP_TOP.vhd:47]
+WARNING: [Synth 8-7129] Port PC_SET[1] in module Instruction_Cache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port PC_SET[0] in module Instruction_Cache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port i_u_type in module top_alu_async is either unconnected or has no load
+WARNING: [Synth 8-7129] Port i_funct7[6] in module top_alu_async is either unconnected or has no load
+WARNING: [Synth 8-7129] Port i_funct7[4] in module top_alu_async is either unconnected or has no load
+WARNING: [Synth 8-7129] Port i_funct7[3] in module top_alu_async is either unconnected or has no load
+WARNING: [Synth 8-7129] Port i_funct7[2] in module top_alu_async is either unconnected or has no load
+WARNING: [Synth 8-7129] Port i_funct7[1] in module top_alu_async is either unconnected or has no load
+WARNING: [Synth 8-7129] Port i_funct7[0] in module top_alu_async is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1424.672 ; gain = 682.332
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1424.672 ; gain = 682.332
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1424.672 ; gain = 682.332
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.051 . Memory (MB): peak = 1424.672 ; gain = 0.000
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [c:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.gen/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0/blk_mem_gen_0_in_context.xdc] for cell 'Data_memory_inst/blk_mem_gen_0_A'
+Finished Parsing XDC File [c:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.gen/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0/blk_mem_gen_0_in_context.xdc] for cell 'Data_memory_inst/blk_mem_gen_0_A'
+Parsing XDC File [c:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.gen/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0/blk_mem_gen_0_in_context.xdc] for cell 'Data_memory_inst/blk_mem_gen_0_B'
+Finished Parsing XDC File [c:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.gen/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0/blk_mem_gen_0_in_context.xdc] for cell 'Data_memory_inst/blk_mem_gen_0_B'
+Parsing XDC File [c:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.gen/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0/blk_mem_gen_0_in_context.xdc] for cell 'Data_memory_inst/blk_mem_gen_0_C'
+Finished Parsing XDC File [c:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.gen/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0/blk_mem_gen_0_in_context.xdc] for cell 'Data_memory_inst/blk_mem_gen_0_C'
+Parsing XDC File [c:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.gen/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0/blk_mem_gen_0_in_context.xdc] for cell 'Data_memory_inst/blk_mem_gen_0_D'
+Finished Parsing XDC File [c:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.gen/sources_1/ip/blk_mem_gen_0/blk_mem_gen_0/blk_mem_gen_0_in_context.xdc] for cell 'Data_memory_inst/blk_mem_gen_0_D'
+Parsing XDC File [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Basys3_sw_Demo.xdc]
+Finished Parsing XDC File [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Basys3_sw_Demo.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Basys3_sw_Demo.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/RP_TOP_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/RP_TOP_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1495.277 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.026 . Memory (MB): peak = 1495.277 ; gain = 0.000
+INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
+INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:17 ; elapsed = 00:00:19 . Memory (MB): peak = 1495.277 ; gain = 752.938
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a35tcpg236-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:17 ; elapsed = 00:00:19 . Memory (MB): peak = 1495.277 ; gain = 752.938
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:17 ; elapsed = 00:00:19 . Memory (MB): peak = 1495.277 ; gain = 752.938
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-327] inferring latch for variable 'r_data_reg' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Data_memory.vhd:171]
+WARNING: [Synth 8-327] inferring latch for variable 'out_regs_reg[0]' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Data_memory.vhd:200]
+WARNING: [Synth 8-327] inferring latch for variable 'out_regs_reg[1]' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Data_memory.vhd:200]
+WARNING: [Synth 8-327] inferring latch for variable 'out_regs_reg[2]' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Data_memory.vhd:200]
+WARNING: [Synth 8-327] inferring latch for variable 'out_regs_reg[3]' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Data_memory.vhd:200]
+WARNING: [Synth 8-327] inferring latch for variable 'out_regs_reg[4]' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Data_memory.vhd:200]
+WARNING: [Synth 8-327] inferring latch for variable 'out_regs_reg[5]' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Data_memory.vhd:200]
+WARNING: [Synth 8-327] inferring latch for variable 'out_regs_reg[6]' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Data_memory.vhd:200]
+WARNING: [Synth 8-327] inferring latch for variable 'out_regs_reg[7]' [C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/SOURCES/Data_memory.vhd:200]
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 1495.277 ; gain = 752.938
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   3 Input   32 Bit       Adders := 2     
+	   2 Input   32 Bit       Adders := 3     
+	   2 Input   31 Bit       Adders := 1     
+	   2 Input    3 Bit       Adders := 1     
+	   2 Input    2 Bit       Adders := 1     
++---XORs : 
+	   2 Input     32 Bit         XORs := 2     
++---Registers : 
+	               32 Bit    Registers := 34    
+	               31 Bit    Registers := 1     
+	                3 Bit    Registers := 1     
+	                2 Bit    Registers := 1     
++---RAMs : 
+	             288K Bit	(9216 X 32 bit)          RAMs := 1     
++---Muxes : 
+	   2 Input   32 Bit        Muxes := 23    
+	   7 Input   32 Bit        Muxes := 2     
+	   4 Input   32 Bit        Muxes := 1     
+	   2 Input   31 Bit        Muxes := 1     
+	   2 Input   16 Bit        Muxes := 1     
+	   3 Input   16 Bit        Muxes := 1     
+	   4 Input    8 Bit        Muxes := 9     
+	   2 Input    8 Bit        Muxes := 12    
+	   3 Input    8 Bit        Muxes := 4     
+	   4 Input    4 Bit        Muxes := 2     
+	   2 Input    4 Bit        Muxes := 1     
+	   2 Input    2 Bit        Muxes := 3     
+	   2 Input    1 Bit        Muxes := 32    
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 90 (col length:60)
+BRAMs: 100 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7129] Port PC_SET[1] in module Instruction_Cache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port PC_SET[0] in module Instruction_Cache is either unconnected or has no load
+WARNING: [Synth 8-7129] Port i_u_type in module top_alu_async is either unconnected or has no load
+WARNING: [Synth 8-7129] Port i_funct7[6] in module top_alu_async is either unconnected or has no load
+WARNING: [Synth 8-7129] Port i_funct7[4] in module top_alu_async is either unconnected or has no load
+WARNING: [Synth 8-7129] Port i_funct7[3] in module top_alu_async is either unconnected or has no load
+WARNING: [Synth 8-7129] Port i_funct7[2] in module top_alu_async is either unconnected or has no load
+WARNING: [Synth 8-7129] Port i_funct7[1] in module top_alu_async is either unconnected or has no load
+WARNING: [Synth 8-7129] Port i_funct7[0] in module top_alu_async is either unconnected or has no load
+WARNING: [Synth 8-6849] Infeasible attribute ram_style = "block" set for RAM "Instruction_Cache_inst/mem_reg",trying to implement using LUTRAM
+WARNING: [Synth 8-6849] Infeasible attribute ram_style = "block" set for RAM "Instruction_Cache_inst/mem_reg",trying to implement using LUTRAM
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:01:35 ; elapsed = 00:01:39 . Memory (MB): peak = 1581.293 ; gain = 838.953
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+Distributed RAM: Preliminary Mapping Report (see note below)
++-----------------------+------------+-----------+----------------------+-------------------+
+|Module Name            | RTL Object | Inference | Size (Depth x Width) | Primitives        | 
++-----------------------+------------+-----------+----------------------+-------------------+
+|Instruction_Cache_inst | mem_reg    | Implied   | 16 K x 32            | RAM256X1S x 1152  | 
++-----------------------+------------+-----------+----------------------+-------------------+
+
+Note: The table above is a preliminary report that shows the Distributed RAMs at the current stage of the synthesis flow. Some Distributed RAMs may be reimplemented as non Distributed RAM primitives later in the synthesis flow. Multiple instantiated RAMs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:01:39 ; elapsed = 00:01:44 . Memory (MB): peak = 1623.262 ; gain = 880.922
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:01:56 ; elapsed = 00:02:02 . Memory (MB): peak = 1631.230 ; gain = 888.891
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+Distributed RAM: Final Mapping Report
++-----------------------+------------+-----------+----------------------+-------------------+
+|Module Name            | RTL Object | Inference | Size (Depth x Width) | Primitives        | 
++-----------------------+------------+-----------+----------------------+-------------------+
+|Instruction_Cache_inst | mem_reg    | Implied   | 16 K x 32            | RAM256X1S x 1152  | 
++-----------------------+------------+-----------+----------------------+-------------------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:02:04 ; elapsed = 00:02:10 . Memory (MB): peak = 1727.797 ; gain = 985.457
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:02:08 ; elapsed = 00:02:14 . Memory (MB): peak = 1882.355 ; gain = 1140.016
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:02:08 ; elapsed = 00:02:14 . Memory (MB): peak = 1882.355 ; gain = 1140.016
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:02:08 ; elapsed = 00:02:15 . Memory (MB): peak = 1882.355 ; gain = 1140.016
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:02:08 ; elapsed = 00:02:15 . Memory (MB): peak = 1882.355 ; gain = 1140.016
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:02:09 ; elapsed = 00:02:15 . Memory (MB): peak = 1882.355 ; gain = 1140.016
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:02:09 ; elapsed = 00:02:15 . Memory (MB): peak = 1882.355 ; gain = 1140.016
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++------+--------------+----------+
+|      |BlackBox name |Instances |
++------+--------------+----------+
+|1     |blk_mem_gen_0 |         4|
++------+--------------+----------+
+
+Report Cell Usage: 
++------+-------------------+------+
+|      |Cell               |Count |
++------+-------------------+------+
+|1     |blk_mem_gen_0_bbox |     4|
+|5     |BUFG               |    10|
+|6     |CARRY4             |    91|
+|7     |LUT1               |    17|
+|8     |LUT2               |   150|
+|9     |LUT3               |   271|
+|10    |LUT4               |   302|
+|11    |LUT5               |   304|
+|12    |LUT6               |  1437|
+|13    |MUXF7              |   244|
+|14    |RAM256X1S          |    32|
+|15    |FDRE               |  1137|
+|16    |LD                 |   272|
+|17    |IBUF               |    18|
+|18    |OBUF               |    28|
++------+-------------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:02:09 ; elapsed = 00:02:15 . Memory (MB): peak = 1882.355 ; gain = 1140.016
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 20 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:01:58 ; elapsed = 00:02:12 . Memory (MB): peak = 1882.355 ; gain = 1069.410
+Synthesis Optimization Complete : Time (s): cpu = 00:02:09 ; elapsed = 00:02:15 . Memory (MB): peak = 1882.355 ; gain = 1140.016
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.050 . Memory (MB): peak = 1892.559 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 639 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 1 inverter(s) to 32 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1896.246 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 304 instances were transformed.
+  LD => LDCE: 240 instances
+  LD => LDCE (inverted pins: G): 32 instances
+  RAM256X1S => RAM256X1S (MUXF7(x2), MUXF8, RAMS64E(x4)): 32 instances
+
+Synth Design complete | Checksum: 3cdde923
+INFO: [Common 17-83] Releasing license: Synthesis
+50 Infos, 29 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:02:13 ; elapsed = 00:02:22 . Memory (MB): peak = 1896.246 ; gain = 1343.734
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.012 . Memory (MB): peak = 1896.246 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'C:/Users/tomto/Documents/skola/CHILIRISK/RISK-V/project_1.runs/synth_1/RP_TOP.dcp' has been generated.
+INFO: [Vivado 12-24828] Executing command : report_utilization -file RP_TOP_utilization_synth.rpt -pb RP_TOP_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Thu May  7 17:07:33 2026...

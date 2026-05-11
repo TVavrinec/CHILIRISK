@@ -1,0 +1,19 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../SOURCES/Instruction_Cache.vhd" \
+"../../../../SOURCES/Instruction_decoder.vhd" \
+"../../../../SOURCES/RP_TOP.vhd" \
+"../../../../SOURCES/Reg_file.vhd" \
+"../../../../SOURCES/ce_gen.vhd" \
+"../../../../SOURCES/sync_reg.vhd" \
+"../../../../SOURCES/top_7seg_driver.vhd" \
+
+vhdl2008 xil_defaultlib  \
+"../../../../SOURCES/top_alu_async.vhd" \
+"../../../../SOURCES/Data_memory.vhd" \
+
+vhdl xil_defaultlib  \
+"../../../../SOURCES/SIM/RP_TOP_TB.vhd" \
+
+# Do not sort compile order
+nosort
