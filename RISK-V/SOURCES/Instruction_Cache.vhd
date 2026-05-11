@@ -104,8 +104,8 @@ architecture Behavioral of Instruction_Cache is
     attribute ram_style : string;
     attribute ram_style of mem : signal is "block";
 
-    SIGNAL PC_internal : SIGNED(30 downto 0)  := (others => '1');
-    SIGNAL PC_internal_next : SIGNED(30 downto 0) := (others => '1');
+    SIGNAL PC_internal : UNSIGNED(29 downto 0)  := (others => '1');
+    SIGNAL PC_internal_next : UNSIGNED(29 downto 0) := (others => '1');
     
 begin
 
@@ -113,13 +113,13 @@ begin
         variable index : integer;
     begin
         if rising_edge(CLK) then
-            index := to_integer(signed(PC_internal_next));
+            index := to_integer(PC_internal_next);
 
             IF PC_RST = '0' THEN
-                PC_internal <= TO_SIGNED(0, 31);
+                PC_internal <= (others => '1');
             ELSIF CLK_EN = '1' THEN
                 PC_internal <= PC_internal_next;
-                PC <= UNSIGNED(PC_internal_next(29 downto 0)) & "00";
+                PC <= PC_internal_next & "00";
                 r_data <= mem(index);
             END IF;
 
@@ -136,7 +136,7 @@ begin
     BEGIN
         PC_internal_next <= PC_internal + 1;
         IF JUMP_F = '1' THEN
-            PC_internal_next <= SIGNED('0' & PC_SET(31 downto 2)); 
+            PC_internal_next <= PC_SET(31 downto 2); 
         END IF;
     END PROCESS;
     

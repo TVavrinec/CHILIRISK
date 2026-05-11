@@ -73,105 +73,54 @@ architecture Behavioral of Instruction_decoder is
 begin
 
     PROCESS (instruct) begin
+        funct_3             <= (others => '0');
+        funct_7             <= (others => '0');
+        rd                  <= (others => '0');
+        rs1                 <= (others => '0');
+        rs2                 <= (others => '0');
+        imm                 <= (others => '0');
+        imm                 <= (others => '0');
+        jump_f              <= '0';
+        reg_write_f         <= '0';
+        mem_read_f          <= '0';
+        mem_write_f         <= '0';
+        bite_cound_memory   <= (others => '0'); -- not used
+        bite_type_memory    <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
+
         CASE instruct(6 downto 0) is
             when "0110011" =>
                 instruct_typ <= R;
-                funct_3 <= instruct(14 downto 12);
-                funct_7 <= instruct(31 downto 25);                
-                rd  <= unsigned(instruct(11 downto 7 ));
-                rs1 <= unsigned(instruct(19 downto 15));
-                rs2 <= unsigned(instruct(24 downto 20));
-                imm <= to_signed(0, 32);
-                jump_f <= '0';
                 reg_write_f <= '1';
-                mem_read_f <= '0';
-                mem_write_f <= '0';
-                bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
+
             when "0101111" =>
                 instruct_typ <= R;
-                funct_3 <= instruct(14 downto 12);
-                funct_7 <= instruct(31 downto 25);
-                rd  <= unsigned(instruct(11 downto 7 ));
-                rs1 <= unsigned(instruct(19 downto 15));
-                rs2 <= unsigned(instruct(24 downto 20));
-                imm <= to_signed(0, 32);
-                jump_f <= '0';
                 reg_write_f <= '1';
-                mem_read_f <= '0';
-                mem_write_f <= '0';
-                bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
+
 
             when "0000011" =>
                 instruct_typ <= I;
-                funct_3 <= instruct(14 downto 12);
-                funct_7 <= (others => '0');
-                rd  <= unsigned(instruct(11 downto 7 ));
-                rs1 <= unsigned(instruct(19 downto 15));
-                rs2 <= to_unsigned(0, 5);
-                imm <= signed((31 downto 12 => instruct(31)) & instruct(31 downto 20));
-                jump_f <= '0';
                 reg_write_f <= '1';
                 mem_read_f <= '1';
-                mem_write_f <= '0';
                 bite_cound_memory <= instruct(13 downto 12);
                 bite_type_memory <= not instruct(14); -- 0 for unsigned, 1 for signed
+
             when "0010011" =>
                 instruct_typ <= I;
-                funct_3 <= instruct(14 downto 12);
-                funct_7 <= (others => '0');
-                rd  <= unsigned(instruct(11 downto 7 ));
-                rs1 <= unsigned(instruct(19 downto 15));
-                rs2 <= to_unsigned(0, 5);
-                imm <= signed((31 downto 12 => instruct(31)) & instruct(31 downto 20));
-                jump_f <= '0';
                 reg_write_f <= '1';
-                mem_read_f <= '0';
-                mem_write_f <= '0';
-                bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed           
+
             when "1100111" =>
                 instruct_typ <= I;
-                funct_3 <= instruct(14 downto 12);
-                funct_7 <= (others => '0');
-                rd  <= unsigned(instruct(11 downto 7 ));
-                rs1 <= unsigned(instruct(19 downto 15));
-                rs2 <= to_unsigned(0, 5);
-                imm <= signed((31 downto 12 => instruct(31)) & instruct(31 downto 20));
                 jump_f <= '1';
                 reg_write_f <= '1';
-                mem_read_f <= '0';
-                mem_write_f <= '0';
-                bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
+
             when "1110011" =>  -- ???
                 instruct_typ <= I;
-                funct_3 <= instruct(14 downto 12);
-                funct_7 <= (others => '0');
-                rd  <= unsigned(instruct(11 downto 7 ));
-                rs1 <= unsigned(instruct(19 downto 15));
-                rs2 <= to_unsigned(0, 5);
-                imm <= signed((31 downto 12 => instruct(31)) & instruct(31 downto 20));
                 jump_f <= '1'; -- ???
                 reg_write_f <= '1';
-                mem_read_f <= '0'; -- ???
-                mem_write_f <= '0';
-                bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
 
 
             when "0100011" =>
                 instruct_typ <= S;
-                funct_3 <= instruct(14 downto 12);
-                funct_7 <= (others => '0');
-                rd  <= to_unsigned(0, 5);
-                rs1 <= unsigned(instruct(19 downto 15));
-                rs2 <= unsigned(instruct(24 downto 20));
-                imm <= signed((31 downto 12 => instruct(31)) & instruct(31 downto 25) & instruct(11 downto 7));
-                jump_f <= '0';
-                reg_write_f <= '0';
-                mem_read_f <= '0';
                 mem_write_f <= '1';
                 bite_cound_memory <= instruct(13 downto 12);
                 bite_type_memory <= not instruct(14); -- 0 for unsigned, 1 for signed
@@ -179,79 +128,247 @@ begin
 
             when "1100011" =>
                 instruct_typ <= B;
-                funct_3 <= instruct(14 downto 12);
-                funct_7 <= (others => '0');
-                rd  <= to_unsigned(0, 5);
-                rs1 <= unsigned(instruct(19 downto 15));
-                rs2 <= unsigned(instruct(24 downto 20));
-                imm <= resize(signed(instruct(7) & instruct(30 downto 25) & instruct(11 downto 8) & '0'), imm'length);
                 jump_f <= '1';
-                reg_write_f <= '0';
-                mem_read_f <= '0';
-                mem_write_f <= '0';
-                bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
 
 
             when "0110111" =>
                 instruct_typ <= U;
-                funct_3 <= (others => '0');
-                funct_7 <= (others => '0');
-                rd  <= unsigned(instruct(11 downto 7));
-                rs1 <= to_unsigned(0, 5);
-                rs2 <= to_unsigned(0, 5);
-                imm <= signed(instruct(31 downto 12) & (11 downto 0 => '0'));
-                jump_f <= '0';
                 reg_write_f <= '1';
-                mem_read_f <= '0';
-                mem_write_f <= '0';
-                bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
+
             when "0010111" =>
                 instruct_typ <= U;
-                funct_3 <= (others => '0');
-                funct_7 <= (others => '0');
-                rd  <= unsigned(instruct(11 downto 7));
-                rs1 <= to_unsigned(0, 5);
-                rs2 <= to_unsigned(0, 5);
-                imm <= signed(instruct(31 downto 12) & (11 downto 0 => '0'));
-                jump_f <= '0';
                 reg_write_f <= '1';
-                mem_read_f <= '0';
-                mem_write_f <= '0';
-                bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
+
 
             when "1101111" =>
                 instruct_typ <= J;
-                funct_3 <= (others => '0');
-                funct_7 <= (others => '0');
-                rd  <= unsigned(instruct(11 downto 7 ));
-                rs1 <= to_unsigned(0, 5);
-                rs2 <= to_unsigned(0, 5);
-                imm <= resize(signed(instruct(31) & instruct(19 downto 12) & instruct(20) & instruct(30 downto 21) & '0'), imm'length);
                 jump_f <= '1';
                 reg_write_f <= '1';
-                mem_read_f <= '0';
-                mem_write_f <= '0';
-                bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
+
             
             when others =>
                 instruct_typ <= R;
-                funct_3 <= (others => '0');
-                funct_7 <= (others => '0');
-                rd  <= to_unsigned(0, 5);
-                rs1 <= to_unsigned(0, 5);
-                rs2 <= to_unsigned(0, 5);
-                imm <= to_signed(0, 32);
-                jump_f <= '0';
-                reg_write_f <= '0';
-                mem_read_f <= '0';
-                mem_write_f <= '0';
-                bite_cound_memory <= "00"; -- not used
-                bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
 
-      END CASE; 
+        END CASE; 
     END PROCESS;
+
+    PROCESS (instruct, instruct_typ)
+        CASE instruct_typ is
+            when R =>
+                funct_3 <= instruct(14 downto 12);
+                funct_7 <= instruct(31 downto 25);                
+                rd  <= unsigned(instruct(11 downto 7 ));
+                rs1 <= unsigned(instruct(19 downto 15));
+                rs2 <= unsigned(instruct(24 downto 20));
+
+            when I =>
+                funct_3 <= instruct(14 downto 12);
+                rd  <= unsigned(instruct(11 downto 7 ));
+                rs1 <= unsigned(instruct(19 downto 15));
+
+            when S =>
+                funct_3 <= instruct(14 downto 12);
+                rs1 <= unsigned(instruct(19 downto 15));
+                rs2 <= unsigned(instruct(24 downto 20));
+                imm <= signed((31 downto 12 => instruct(31)) & instruct(31 downto 25) & instruct(11 downto 7));
+
+            when B =>
+                funct_3 <= instruct(14 downto 12);
+                rs1 <= unsigned(instruct(19 downto 15));
+                rs2 <= unsigned(instruct(24 downto 20));
+                imm <= resize(signed(instruct(7) & instruct(30 downto 25) & instruct(11 downto 8) & '0'), imm'length);
+
+            when U =>
+                rd  <= unsigned(instruct(11 downto 7));
+                imm <= signed(instruct(31 downto 12) & (11 downto 0 => '0'));
+
+            when J =>
+                rd  <= unsigned(instruct(11 downto 7 ));
+                imm <= resize(signed(instruct(31) & instruct(19 downto 12) & instruct(20) & instruct(30 downto 21) & '0'), imm'length);
+
+        END CASE; 
+    END PROCESS;
+    
+    -- PROCESS (instruct) begin
+    --     CASE instruct(6 downto 0) is
+    --         when "0110011" =>
+    --             instruct_typ <= R;
+    --             funct_3 <= instruct(14 downto 12);
+    --             funct_7 <= instruct(31 downto 25);                
+    --             rd  <= unsigned(instruct(11 downto 7 ));
+    --             rs1 <= unsigned(instruct(19 downto 15));
+    --             rs2 <= unsigned(instruct(24 downto 20));
+    --             imm <= to_signed(0, 32);
+    --             jump_f <= '0';
+    --             reg_write_f <= '1';
+    --             mem_read_f <= '0';
+    --             mem_write_f <= '0';
+    --             bite_cound_memory <= "00"; -- not used
+    --             bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
+    --         when "0101111" =>
+    --             instruct_typ <= R;
+    --             funct_3 <= instruct(14 downto 12);
+    --             funct_7 <= instruct(31 downto 25);
+    --             rd  <= unsigned(instruct(11 downto 7 ));
+    --             rs1 <= unsigned(instruct(19 downto 15));
+    --             rs2 <= unsigned(instruct(24 downto 20));
+    --             imm <= to_signed(0, 32);
+    --             jump_f <= '0';
+    --             reg_write_f <= '1';
+    --             mem_read_f <= '0';
+    --             mem_write_f <= '0';
+    --             bite_cound_memory <= "00"; -- not used
+    --             bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
+
+    --         when "0000011" =>
+    --             instruct_typ <= I;
+    --             funct_3 <= instruct(14 downto 12);
+    --             funct_7 <= (others => '0');
+    --             rd  <= unsigned(instruct(11 downto 7 ));
+    --             rs1 <= unsigned(instruct(19 downto 15));
+    --             rs2 <= to_unsigned(0, 5);
+    --             imm <= signed((31 downto 12 => instruct(31)) & instruct(31 downto 20));
+    --             jump_f <= '0';
+    --             reg_write_f <= '1';
+    --             mem_read_f <= '1';
+    --             mem_write_f <= '0';
+    --             bite_cound_memory <= instruct(13 downto 12);
+    --             bite_type_memory <= not instruct(14); -- 0 for unsigned, 1 for signed
+    --         when "0010011" =>
+    --             instruct_typ <= I;
+    --             funct_3 <= instruct(14 downto 12);
+    --             funct_7 <= (others => '0');
+    --             rd  <= unsigned(instruct(11 downto 7 ));
+    --             rs1 <= unsigned(instruct(19 downto 15));
+    --             rs2 <= to_unsigned(0, 5);
+    --             imm <= signed((31 downto 12 => instruct(31)) & instruct(31 downto 20));
+    --             jump_f <= '0';
+    --             reg_write_f <= '1';
+    --             mem_read_f <= '0';
+    --             mem_write_f <= '0';
+    --             bite_cound_memory <= "00"; -- not used
+    --             bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed           
+    --         when "1100111" =>
+    --             instruct_typ <= I;
+    --             funct_3 <= instruct(14 downto 12);
+    --             funct_7 <= (others => '0');
+    --             rd  <= unsigned(instruct(11 downto 7 ));
+    --             rs1 <= unsigned(instruct(19 downto 15));
+    --             rs2 <= to_unsigned(0, 5);
+    --             imm <= signed((31 downto 12 => instruct(31)) & instruct(31 downto 20));
+    --             jump_f <= '1';
+    --             reg_write_f <= '1';
+    --             mem_read_f <= '0';
+    --             mem_write_f <= '0';
+    --             bite_cound_memory <= "00"; -- not used
+    --             bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
+    --         when "1110011" =>  -- ???
+    --             instruct_typ <= I;
+    --             funct_3 <= instruct(14 downto 12);
+    --             funct_7 <= (others => '0');
+    --             rd  <= unsigned(instruct(11 downto 7 ));
+    --             rs1 <= unsigned(instruct(19 downto 15));
+    --             rs2 <= to_unsigned(0, 5);
+    --             imm <= signed((31 downto 12 => instruct(31)) & instruct(31 downto 20));
+    --             jump_f <= '1'; -- ???
+    --             reg_write_f <= '1';
+    --             mem_read_f <= '0'; -- ???
+    --             mem_write_f <= '0';
+    --             bite_cound_memory <= "00"; -- not used
+    --             bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
+
+
+    --         when "0100011" =>
+    --             instruct_typ <= S;
+    --             funct_3 <= instruct(14 downto 12);
+    --             funct_7 <= (others => '0');
+    --             rd  <= to_unsigned(0, 5);
+    --             rs1 <= unsigned(instruct(19 downto 15));
+    --             rs2 <= unsigned(instruct(24 downto 20));
+    --             imm <= signed((31 downto 12 => instruct(31)) & instruct(31 downto 25) & instruct(11 downto 7));
+    --             jump_f <= '0';
+    --             reg_write_f <= '0';
+    --             mem_read_f <= '0';
+    --             mem_write_f <= '1';
+    --             bite_cound_memory <= instruct(13 downto 12);
+    --             bite_type_memory <= not instruct(14); -- 0 for unsigned, 1 for signed
+
+
+    --         when "1100011" =>
+    --             instruct_typ <= B;
+    --             funct_3 <= instruct(14 downto 12);
+    --             funct_7 <= (others => '0');
+    --             rd  <= to_unsigned(0, 5);
+    --             rs1 <= unsigned(instruct(19 downto 15));
+    --             rs2 <= unsigned(instruct(24 downto 20));
+    --             imm <= resize(signed(instruct(7) & instruct(30 downto 25) & instruct(11 downto 8) & '0'), imm'length);
+    --             jump_f <= '1';
+    --             reg_write_f <= '0';
+    --             mem_read_f <= '0';
+    --             mem_write_f <= '0';
+    --             bite_cound_memory <= "00"; -- not used
+    --             bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
+
+
+    --         when "0110111" =>
+    --             instruct_typ <= U;
+    --             funct_3 <= (others => '0');
+    --             funct_7 <= (others => '0');
+    --             rd  <= unsigned(instruct(11 downto 7));
+    --             rs1 <= to_unsigned(0, 5);
+    --             rs2 <= to_unsigned(0, 5);
+    --             imm <= signed(instruct(31 downto 12) & (11 downto 0 => '0'));
+    --             jump_f <= '0';
+    --             reg_write_f <= '1';
+    --             mem_read_f <= '0';
+    --             mem_write_f <= '0';
+    --             bite_cound_memory <= "00"; -- not used
+    --             bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
+    --         when "0010111" =>
+    --             instruct_typ <= U;
+    --             funct_3 <= (others => '0');
+    --             funct_7 <= (others => '0');
+    --             rd  <= unsigned(instruct(11 downto 7));
+    --             rs1 <= to_unsigned(0, 5);
+    --             rs2 <= to_unsigned(0, 5);
+    --             imm <= signed(instruct(31 downto 12) & (11 downto 0 => '0'));
+    --             jump_f <= '0';
+    --             reg_write_f <= '1';
+    --             mem_read_f <= '0';
+    --             mem_write_f <= '0';
+    --             bite_cound_memory <= "00"; -- not used
+    --             bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
+
+    --         when "1101111" =>
+    --             instruct_typ <= J;
+    --             funct_3 <= (others => '0');
+    --             funct_7 <= (others => '0');
+    --             rd  <= unsigned(instruct(11 downto 7 ));
+    --             rs1 <= to_unsigned(0, 5);
+    --             rs2 <= to_unsigned(0, 5);
+    --             imm <= resize(signed(instruct(31) & instruct(19 downto 12) & instruct(20) & instruct(30 downto 21) & '0'), imm'length);
+    --             jump_f <= '1';
+    --             reg_write_f <= '1';
+    --             mem_read_f <= '0';
+    --             mem_write_f <= '0';
+    --             bite_cound_memory <= "00"; -- not used
+    --             bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
+            
+    --         when others =>
+    --             instruct_typ <= R;
+    --             funct_3 <= (others => '0');
+    --             funct_7 <= (others => '0');
+    --             rd  <= to_unsigned(0, 5);
+    --             rs1 <= to_unsigned(0, 5);
+    --             rs2 <= to_unsigned(0, 5);
+    --             imm <= to_signed(0, 32);
+    --             jump_f <= '0';
+    --             reg_write_f <= '0';
+    --             mem_read_f <= '0';
+    --             mem_write_f <= '0';
+    --             bite_cound_memory <= "00"; -- not used
+    --             bite_type_memory  <= UNSIGNED_F; -- 0 for unsigned, 1 for signed
+
+    --   END CASE; 
+    -- END PROCESS;
 end Behavioral;
