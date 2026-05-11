@@ -13,9 +13,9 @@ COMPONENT RP_TOP
     PORT(
 
         CLK : IN STD_LOGIC;
-        RST : IN STD_LOGIC;
+        RST_i : IN STD_LOGIC;
         
-        sw : IN STD_LOGIC_VECTOR (15 downto 0);
+        sw_i : IN STD_LOGIC_VECTOR (15 downto 0);
         
         --OUTPUTS
 
@@ -37,8 +37,8 @@ begin
     dut : RP_TOP
         PORT MAP(
             CLK => CLK,
-            RST => RST,
-            sw => sw,
+            RST_i => RST,
+            sw_i => sw,
             led => led,
             DISP_SEG => DISP_SEG,
             DISP_DIG => DISP_DIG

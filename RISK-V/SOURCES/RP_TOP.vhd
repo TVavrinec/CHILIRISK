@@ -34,9 +34,9 @@ use IEEE.NUMERIC_STD.ALL;
 entity RP_TOP is
     Port ( 
             CLK : IN STD_LOGIC;
-            RST : IN STD_LOGIC;
+            RST_i : IN STD_LOGIC;
 
-            sw : IN STD_LOGIC_VECTOR (15 downto 0);
+            sw_i : IN STD_LOGIC_VECTOR (15 downto 0);
 
 		    DISP_SEG    : out STD_LOGIC_VECTOR (7 DOWNTO 0);
 		    DISP_DIG    : out STD_LOGIC_VECTOR (3 DOWNTO 0);
@@ -46,10 +46,20 @@ end RP_TOP;
 
 architecture Behavioral of RP_TOP is
 
+    COMPONENT sync_reg
+        PORT(
+            CLK                 : IN    STD_LOGIC;
+            SIG_IN              : IN    STD_LOGIC; 
+            WORD_IN             : IN    STD_LOGIC_VECTOR (15 downto 0);
+            WORD_OUT            : OUT   STD_LOGIC_VECTOR (15 downto 0);
+            SIG_OUT             : OUT   STD_LOGIC
+        ); 
+        END COMPONENT sync_reg;
+
     component top_7seg_driver is
         generic(
-            GCLK_FREQ	: positive  := 100e6;
-            ANODE_FREQ	: positive  := 100;
+            GCLK_FREQ	: positive  := 50e6;
+            ANODE_FREQ	: positive  := 400;
             DOT_POINT	: std_logic := '1'
         );
         port(
@@ -192,6 +202,10 @@ architecture Behavioral of RP_TOP is
            
     END COMPONENT Data_memory;
 
+    -- inputs
+    SIGNAL RST  : STD_LOGIC;
+    SIGNAL sw   : STD_LOGIC_VECTOR (15 downto 0);
+
     -- signals for the 7seg display
 	SIGNAL w_dig_1	: STD_LOGIC_VECTOR (3 DOWNTO 0);
 	SIGNAL w_dig_2	: STD_LOGIC_VECTOR (3 DOWNTO 0);
@@ -246,17 +260,38 @@ architecture Behavioral of RP_TOP is
 
 begin ------------------------------------ Behavioral description of RP_TOP ------------------------------------ 
 
-    CLK_GEN_50MHZ_COMP : clk_wiz_0
-    port map ( 
-        -- Clock out ports  
-        clk_out1 => clk_sig,
-        -- Status and control signals                
-        reset => '1',
-        locked => open,
-        -- Clock in ports
-        clk_in1 => CLK
-    );
+    -- CLK_GEN_50MHZ_COMP : clk_wiz_0
+    -- port map ( 
+    --     -- Clock out ports  
+    --     clk_out1 => clk_sig,
+    --     -- Status and control signals                
+    --     reset => '1',
+    --     locked => open,
+    --     -- Clock in ports
+    --     clk_in1 => CLK
+    -- );
     -- clk_sig <= CLK; --CLK pro simulaci
+
+    ce_gen_inst : ce_gen
+    generic map (
+            G_DIV_FACT => 2
+        )
+    port map (
+            CLK     => CLK,
+            CE      => '1',
+            SRST    => '0',
+            CE_O    => clk_sig 
+        );
+
+    sync_reg_i : sync_reg
+    PORT MAP(
+            CLK             => clk_sig,
+            SIG_IN          => RST_i,
+            SIG_OUT         => RST,
+            WORD_IN         => sw_i,
+            WORD_OUT        => sw
+        );
+
 
     seg_disp_driver_inst : top_7seg_driver
     generic map(
@@ -273,17 +308,6 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
 		o_segments	=> DISP_SEG,
 		o_anode		=> DISP_DIG 
 	);
-    
-    ce_gen_inst : ce_gen
-    generic map (
-            G_DIV_FACT => 1
-        )
-    port map (
-            CLK     => clk_sig,
-            CE      => '1',
-            SRST    => '0',
-            CE_O    => CLK_B 
-        );
 
     top_alu_async_inst : top_alu_async
 	generic map(
@@ -378,7 +402,6 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
            --OUTPUTS
            r_data   => memory_data_out,
            pin_out  => led, -- open, --
-        --    disp_out => open
            disp_out(03 downto 00) => w_dig_1,
            disp_out(07 downto 04) => w_dig_2,
            disp_out(11 downto 08) => w_dig_3,
@@ -387,10 +410,6 @@ begin ------------------------------------ Behavioral description of RP_TOP ----
     -- led <= "1111111100000000";
     -- led(0) <= '0';
       
-    -- w_dig_1 <= "0000";
-    -- w_dig_2 <= "0001";
-    -- w_dig_3 <= "0100";
-    -- w_dig_4 <= "1111";
 
     process (rd_value, mem_read_f, memory_data_out) is
     begin
